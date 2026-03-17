@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مكتبة التلخيصات</title>
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#f0fdf4,#ecfdf5,#f8fafc);
+margin:0;
+padding:40px;
+direction:rtl;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+}
+
+h2{
+text-align:center;
+color:#166534;
+margin-bottom:40px;
+}
+
+.subject-box{
+background:white;
+padding:25px;
+border-radius:20px;
+margin-bottom:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.summary-item{
+background:#f9fafb;
+padding:15px;
+border-radius:12px;
+margin-top:10px;
+}
+
+button{
+margin:5px;
+padding:8px 14px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:13px;
+}
+
+.view-btn{ background:#16a34a; color:white; }
+.download-btn{ background:#2563eb; color:white; }
+.delete-btn{ background:#dc2626; color:white; }
+
+.no-data{
+text-align:center;
+color:#888;
+margin-top:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>📚 مكتبة التلخيصات</h2>
+<div id="library"></div>
+</div>
+
+<script>
+
+const libraryDiv = document.getElementById("library");
+
+let foundData = false;
+
+/* البحث عن جميع المفاتيح */
+for(let i=0; i<localStorage.length; i++){
+
+const key = localStorage.key(i);
+
+if(key.startsWith("savedSummary_")){
+
+foundData = true;
+
+const subject = key.replace("savedSummary_","");
+const summaries = JSON.parse(localStorage.getItem(key)) || [];
+
+const subjectBox = document.createElement("div");
+subjectBox.className = "subject-box";
+
+subjectBox.innerHTML = `
+<h3>📘 ${subject}</h3>
+<button class="delete-btn" onclick="deleteAll('${key}')">حذف جميع التلخيصات</button>
+`;
+
+summaries.forEach((item,index)=>{
+
+const summaryDiv = document.createElement("div");
+summaryDiv.className = "summary-item";
+
+summaryDiv.innerHTML = `
+<strong>📅 ${item.date}</strong><br>
+<button class="view-btn" onclick="viewSummary('${key}',${index})">عرض</button>
+<button class="download-btn" onclick="downloadSummary('${key}',${index})">تحميل PDF</button>
+<button class="delete-btn" onclick="deleteOne('${key}',${index})">حذف</button>
+`;
+
+subjectBox.appendChild(summaryDiv);
+
+});
+
+libraryDiv.appendChild(subjectBox);
+
+}
+
+}
+
+if(!foundData){
+libraryDiv.innerHTML = `<div class="no-data">لا يوجد تلخيصات محفوظة بعد</div>`;
+}
+
+/* ===== عرض ===== */
+function viewSummary(key,index){
+
+const summaries = JSON.parse(localStorage.getItem(key));
+alert(summaries[index].text);
+
+}
+
+/* ===== تحميل PDF ===== */
+function downloadSummary(key,index){
+
+const summaries = JSON.parse(localStorage.getItem(key));
+const { jsPDF } = window.jspdf;
+
+const doc = new jsPDF();
+doc.text(summaries[index].text, 10, 10);
+doc.save("summary.pdf");
+
+}
+
+/* ===== حذف نسخة واحدة ===== */
+function deleteOne(key,index){
+
+let summaries = JSON.parse(localStorage.getItem(key));
+summaries.splice(index,1);
+
+if(summaries.length === 0){
+localStorage.removeItem(key);
+}else{
+localStorage.setItem(key, JSON.stringify(summaries));
+}
+
+location.reload();
+
+}
+
+/* ===== حذف الكل ===== */
+function deleteAll(key){
+
+if(confirm("هل أنت متأكد من حذف جميع التلخيصات؟")){
+localStorage.removeItem(key);
+location.reload();
+}
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>الاختبار التفاعلي</title>
+<script src="questions.js"></script>
+<style>
+body{
+font-family:Segoe UI;
+background:#f0fdf4;
+margin:0;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:40px;
+}
+
+.question-card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.question{
+font-size:22px;
+margin-bottom:20px;
+}
+
+.option{
+padding:10px;
+border:2px solid #e5e7eb;
+border-radius:10px;
+margin-bottom:10px;
+cursor:pointer;
+}
+
+.option:hover{
+background:#dcfce7;
+}
+
+.timer{
+font-size:20px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+.progress{
+height:8px;
+background:#ddd;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:20px;
+}
+
+.progress-bar{
+height:100%;
+background:#16a34a;
+width:0%;
+}
+.footer{
+margin-top:60px;
+background:linear-gradient(135deg,#14532d,#166534);
+color:#d1fae5;
+text-align:center;
+padding:2rem;
+font-weight:600;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2 id="testTitle"></h2>
+
+<div class="timer" id="timer"></div>
+
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div id="examContainer"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+/* ============================
+جلب المادة مرة واحدة فقط
+============================ */
+
+const subject = localStorage.getItem("currentSubject");
+
+if(!subject){
+    window.location.replace("subjects.html");
+    throw new Error("No subject selected");
+}
+
+/* ============================
+Firebase
+============================ */
+
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_DOMAIN",
+projectId: "YOUR_PROJECT",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ============================
+تحميل الأسئلة Offline First
+============================ */
+
+async function loadQuestionsOfflineFirst(){
+
+let local = localStorage.getItem("questionsBank");
+
+if(local){
+console.log("تم تحميل الأسئلة من التخزين المحلي");
+return JSON.parse(local);
+}
+
+if(!navigator.onLine){
+alert("لا يوجد إنترنت ولا يوجد بنك أسئلة محلي");
+return [];
+}
+
+const snap = await getDocs(collection(db,"questions"));
+let bank=[];
+snap.forEach(doc=>{
+bank.push(doc.data());
+});
+
+localStorage.setItem("questionsBank",JSON.stringify(bank));
+return bank;
+}
+
+/* ============================
+تحديث الأسئلة
+============================ */
+
+async function updateQuestions(){
+if(!navigator.onLine) return;
+
+const snap = await getDocs(collection(db,"questions"));
+let bank=[];
+snap.forEach(doc=>{
+bank.push(doc.data());
+});
+
+localStorage.setItem("questionsBank",JSON.stringify(bank));
+console.log("تم تحديث بنك الأسئلة");
+}
+
+/* ============================
+تحميل بنك الأسئلة
+============================ */
+
+const bank = await loadQuestionsOfflineFirst();
+
+/* فلترة المادة */
+const subjectQuestions = bank.filter(q => q.subject === subject);
+
+if(subjectQuestions.length === 0){
+document.getElementById("examContainer").innerHTML = `
+<div class="question-card">
+<h2>لا توجد أسئلة لهذه المادة حالياً</h2>
+<p>تأكد من إضافة الأسئلة في قاعدة البيانات</p>
+</div>
+`;
+throw new Error("No questions");
+}
+
+/* ============================
+اختبار عشوائي
+============================ */
+
+function shuffle(array){
+for(let i=array.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[array[i],array[j]]=[array[j],array[i]];
+}
+return array;
+}
+
+const questions = shuffle(subjectQuestions).slice(0, Math.min(50, subjectQuestions.length));
+
+/* ============================
+المتغيرات
+============================ */
+
+let currentQuestion = 0;
+let answers = [];
+let time = 1800;
+
+/* ============================
+المؤقت
+============================ */
+
+const timerEl = document.getElementById("timer");
+
+const timer = setInterval(()=>{
+time--;
+
+let m=Math.floor(time/60);
+let s=time%60;
+
+timerEl.innerText = "الوقت المتبقي: "+m+":"+ (s<10?"0":"")+s;
+
+if(time<=0){
+finishExam();
+}
+
+},1000);
+
+/* ============================
+منع الغش
+============================ */
+
+document.addEventListener("visibilitychange",()=>{
+if(document.hidden){
+alert("تم الخروج من الاختبار");
+finishExam();
+}
+});
+
+/* ============================
+عرض السؤال
+============================ */
+
+function showQuestion(){
+
+if(!questions[currentQuestion]){
+finishExam();
+return;
+}
+
+const q = questions[currentQuestion];
+let optionsHTML="";
+
+if(q.type==="tf"){
+optionsHTML+=`
+<div class="option" onclick="selectAnswer('true')">صح</div>
+<div class="option" onclick="selectAnswer('false')">خطأ</div>
+`;
+}
+
+if(q.type==="mcq" && q.options){
+q.options.forEach(o=>{
+optionsHTML+=`
+<div class="option" onclick="selectAnswer('${o}')">${o}</div>
+`;
+});
+}
+
+document.getElementById("progressBar").style.width =
+((currentQuestion+1)/questions.length)*100+"%";
+
+document.getElementById("examContainer").innerHTML=`
+<div class="question-card">
+<div class="question">
+${currentQuestion+1}. ${q.question || "سؤال غير متوفر"}
+</div>
+${optionsHTML}
+<br>
+<button onclick="nextQuestion()">التالي</button>
+<button onclick="finishExam()">إنهاء الاختبار</button>
+</div>
+`;
+}
+
+showQuestion();
+
+/* ============================
+اختيار الإجابة
+============================ */
+
+window.selectAnswer=function(ans){
+answers[currentQuestion]=ans;
+}
+
+/* ============================
+التالي
+============================ */
+
+window.nextQuestion=function(){
+if(currentQuestion < questions.length-1){
+currentQuestion++;
+showQuestion();
+}else{
+finishExam();
+}
+}
+
+/* ============================
+حفظ النتائج Offline
+============================ */
+
+function saveResultOffline(result){
+let results = JSON.parse(localStorage.getItem("offlineResults") || "[]");
+results.push(result);
+localStorage.setItem("offlineResults",JSON.stringify(results));
+}
+
+/* ============================
+مزامنة النتائج
+============================ */
+
+async function syncResults(){
+if(!navigator.onLine) return;
+
+let results = JSON.parse(localStorage.getItem("offlineResults") || "[]");
+for(const r of results){
+await addDoc(collection(db,"results"),r);
+}
+localStorage.removeItem("offlineResults");
+}
+
+/* ============================
+إنهاء الاختبار
+============================ */
+
+async function finishExam(){
+
+clearInterval(timer);
+
+let correct=0;
+let resultHTML="";
+
+questions.forEach((q,i)=>{
+const user=answers[i];
+const ok = user===q.answer;
+if(ok) correct++;
+
+resultHTML+=`
+<p style="color:${ok?'green':'red'}">
+${i+1}. ${q.question}
+<br>
+إجابتك: ${user || "لم تجب"}
+<br>
+الإجابة الصحيحة: ${q.answer}
+</p>
+<hr>
+`;
+});
+
+let percent = Math.round((correct/questions.length)*100);
+
+const resultData={
+subject:subject,
+score:correct,
+total:questions.length,
+percent:percent,
+date:new Date()
+};
+
+if(navigator.onLine){
+await addDoc(collection(db,"results"),resultData);
+}else{
+saveResultOffline(resultData);
+}
+
+document.getElementById("examContainer").innerHTML=`
+<h2>انتهى الاختبار</h2>
+<h1>${correct} / ${questions.length}</h1>
+<h2>${percent}%</h2>
+<br>
+${resultHTML}
+`;
+}
+
+/* تحديث تلقائي */
+updateQuestions();
+window.addEventListener("online",()=>{
+updateQuestions();
+syncResults();
+});
+
+</script><footer class="footer">
+&copy; 2026 دليل التميز | جميع الحقوق محفوظة
+</footer>
+</body>
+</html>

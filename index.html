@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل التميز ثالث ثانوي تسجيل الدخول</title>
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+  
+    <script>
+        // الدالة التي تخفي صفحة الدخول وتوجه المستخدم فوراً إذا كان مفعلاً
+      if (localStorage.getItem("subscriptionActive") === "true") {
+            window.location.href = "subjects.html";
+        }
+    </script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+background:linear-gradient(135deg,#4361ee,#4cc9f0);
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:100vh;
+direction:rtl;
+}
+
+/* تصغير صفحة الدخول قليلاً */
+.login-container{
+background:white;
+border-radius:20px;
+padding:30px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+width:90%;
+max-width:360px;
+animation:slideInUp .6s ease;
+}
+
+@keyframes slideInUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.login-header{
+text-align:center;
+margin-bottom:25px;
+}
+
+.logo-circle{
+width:70px;
+height:70px;
+background:linear-gradient(135deg,#4361ee,#4cc9f0);
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto 15px;
+font-size:2rem;
+color:white;
+animation:bounce 1s ease infinite;
+}
+
+@keyframes bounce{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+}
+
+.login-header h1{
+color:#4361ee;
+margin-bottom:10px;
+font-size:1.8rem;
+}
+
+.subtitle{
+color:#8d99ae;
+font-size:.9rem;
+}
+
+.form-group{
+margin-bottom:18px;
+}
+
+.form-group label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+color:#2b2d42;
+}
+
+.input-wrapper{
+position:relative;
+display:flex;
+align-items:center;
+background:#f8f9fa;
+border:2px solid #e0e0e0;
+border-radius:10px;
+padding:0 15px;
+transition:.3s;
+}
+
+.input-wrapper:focus-within{
+border-color:#4361ee;
+box-shadow:0 0 0 3px rgba(67,97,238,.1);
+}
+
+.input-wrapper i{
+color:#8d99ae;
+margin-left:10px;
+}
+
+.input-wrapper input{
+flex:1;
+border:none;
+background:transparent;
+padding:10px 0;
+font-size:.95rem;
+color:#2b2d42;
+}
+
+.input-wrapper input::placeholder{
+color:#8d99ae;
+}
+
+.toggle-password{
+background:none;
+border:none;
+cursor:pointer;
+color:#8d99ae;
+font-size:1.2rem;
+margin-left:10px;
+}
+
+.toggle-password:hover{
+color:#4361ee;
+}
+
+.btn-login,
+.btn-trial{
+padding:11px 22px;
+border:none;
+border-radius:8px;
+font-size:.95rem;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+width:100%;
+margin-top:12px;
+}
+
+.btn-login{
+background:linear-gradient(135deg,#4361ee,#4cc9f0);
+color:white;
+}
+
+.btn-login:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(67,97,238,.3);
+}
+
+.btn-trial{
+background:linear-gradient(135deg,#4361ee,#4cc9f0);
+color:white;
+}
+
+.btn-trial:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(67,97,238,.3);
+}
+
+.divider{
+display:flex;
+align-items:center;
+margin:22px 0;
+color:#8d99ae;
+}
+
+.divider::before,
+.divider::after{
+content:'';
+flex:1;
+height:1px;
+background:#e0e0e0;
+}
+
+.divider span{
+padding:0 15px;
+font-size:.85rem;
+}
+
+.login-footer{
+text-align:center;
+margin-top:15px;
+font-size:.85rem;
+}
+
+.login-footer p{
+margin-bottom:5px;
+color:#8d99ae;
+}
+
+.login-footer a{
+color:#4361ee;
+text-decoration:none;
+}
+
+/* نجاح التفعيل */
+#success-animation{
+display:none;
+text-align:center;
+margin-top:20px;
+color:#2ecc71;
+animation:bounceIn .8s ease;
+}
+
+@keyframes bounceIn{
+0%{transform:scale(.3);opacity:0;}
+50%{transform:scale(1.05);opacity:1;}
+70%{transform:scale(.9);}
+100%{transform:scale(1);}
+}
+
+/* صندوق التواصل */
+.contact-box{
+background:linear-gradient(135deg,#4f6ef7,#4cc0e6);
+padding:18px;
+border-radius:20px;
+margin-top:20px;
+text-align:center;
+color:#282724; /* لون النص داخل الصندوق */
+
+}
+
+.contact-text{
+margin-bottom:12px;
+font-size:13px;
+white-space:nowrap;
+}
+
+/* جعل الأرقام في نفس السطر */
+.contact-numbers{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:30px;
+direction:ltr;
+flex-wrap:nowrap;
+margin-top:10px;
+}
+
+.contact-item{
+display:flex;
+align-items:center;
+gap:8px;
+text-decoration:none;
+font-size:18px;
+font-weight:bold;
+color:#FFD54F; /* اللون الأصفر */
+}
+
+.contact-item i{
+color:#FFD54F
+font-size:20px;
+}
+</style></head>
+<body>
+    
+    <div class="login-container">
+        <div id="login-form-content">
+            <div class="login-header">
+                <div class="logo-circle">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1> دليل التميز  (3)</h1>
+                <p class="subtitle">دليل  التميز ثالث الثانوي</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="passwordInput">مفتاح التفعيل</label>
+                    <div class="input-wrapper" id="keyWrapper">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="passwordInput" placeholder="أدخل مفتاح التفعيل" required autocomplete="off">
+                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    تسجيل الدخول
+                </button>
+            </form>
+
+            <div class="divider"><span>أو</span></div>
+
+            <button class="btn-trial" onclick="startTrial()">
+<i class="fas fa-lock-open"></i>
+                جرّب النسخة المجانية
+            </button>
+
+
+
+
+
+<div class="contact-box">
+
+<p class="contact-text">
+لمعرفة نقاط البيع والاستفسار يرجى مراسلتنا واتساب
+</p>
+
+<div class="contact-numbers">
+
+<a href="https://wa.me/964738498370" target="_blank" class="contact-item">
+<i class="fab fa-whatsapp"></i>
+738498370
+</a>
+
+<a href="https://wa.me/964777957431" target="_blank" class="contact-item">
+<i class="fab fa-whatsapp"></i>
+777957431
+</a>
+
+</div>
+
+</div>
+
+
+    </div>
+
+    
+
+<div id="success-animation" style="display:none;text-align:center;color:#16a34a;">
+
+<i class="fas fa-check-circle" style="font-size:5rem;"></i>
+
+<h2 style="margin-top:15px;">
+تم التفعيل بنجاح 🎉
+</h2>
+
+<p style="color:#555;">
+تم تفعيل النسخة لمدة سنة كاملة 👋
+</p>
+
+</div>
+    </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { 
+  getFirestore, doc, getDoc, runTransaction, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+/* ============================= */
+/* ===== نظام منع المحاولات ===== */
+/* ============================= */
+
+const MAX_ATTEMPTS = 3;
+const BLOCK_TIME = 10 * 60 * 1000; // 10 دقائق
+
+function isBlocked() {
+    const blockUntil = localStorage.getItem("blockedUntil");
+    if (!blockUntil) return false;
+
+    if (Date.now() > parseInt(blockUntil)) {
+        localStorage.removeItem("blockedUntil");
+        localStorage.removeItem("loginAttempts");
+        return false;
+    }
+    return true;
+}
+
+function registerFailedAttempt(){
+    let attempts = parseInt(localStorage.getItem("loginAttempts") || "0");
+    attempts++;
+    localStorage.setItem("loginAttempts", attempts);
+
+    if(attempts >= MAX_ATTEMPTS){
+        const blockUntil = Date.now() + BLOCK_TIME;
+        localStorage.setItem("blockedUntil", blockUntil);
+        alert("🚫 تم حظر المحاولة لمدة 10 دقائق");
+    }else{
+        alert("❌ المفتاح غير صحيح\nالمحاولة " + attempts + " من 3");
+    }
+}
+
+/* ============================= */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCzQ3CAwzIS41TuWsbhomTdsdDzJGH3bmU",
+  authDomain: "studentapp-97888.firebaseapp.com",
+  projectId: "studentapp-97888",
+  storageBucket: "studentapp-97888.appspot.com",
+  messagingSenderId: "654721058804",
+  appId: "1:654721058804:web:db251bb134e8abd73fdba1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+function getDeviceId(){
+  let id = localStorage.getItem("deviceId");
+  if(!id){
+    const raw = navigator.userAgent + screen.width + screen.height + navigator.hardwareConcurrency;
+    id = btoa(raw).substring(0,40);
+    localStorage.setItem("deviceId", id);
+  }
+  return id;
+}
+
+window.handleLogin = async function(event){
+  event.preventDefault();
+
+  /* ===== فحص الحظر أولاً ===== */
+  if(isBlocked()){
+      const remaining = Math.ceil(
+          (parseInt(localStorage.getItem("blockedUntil")) - Date.now()) / 60000
+      );
+      alert("🚫 تم حظر المحاولة\nحاول بعد " + remaining + " دقيقة");
+      return;
+  }
+
+  const key = document.getElementById("passwordInput").value.trim();
+  const deviceId = getDeviceId();
+  const loginBtn = document.getElementById("loginBtn");
+
+  if(!key) { alert("أدخل مفتاح التفعيل"); return; }
+
+  loginBtn.disabled = true;
+  loginBtn.innerText = "جاري التحقق...";
+
+  try {
+    const docRef = doc(db, "activationKeys", key);
+
+    await runTransaction(db, async (transaction) => {
+      const snap = await transaction.get(docRef);
+      
+      if (!snap.exists()) throw "المفتاح غير صحيح ❌";
+
+      const data = snap.data();
+      if (data.disabled === true) throw "تم إيقاف هذا المفتاح من قبل الإدارة ❌";
+
+      if (data.used === true) {
+          throw "هذا المفتاح تم تفعيله مسبقاً ولا يمكن استخدامه مرة أخرى 🚫";
+      }
+
+      const expiryDate = new Date();
+      expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+      transaction.update(docRef, {
+        used: true,
+        deviceId: deviceId,
+        activatedAt: serverTimestamp(),
+        expiresAt: expiryDate.toISOString() 
+      });
+    });
+
+    /* ===== نجاح تسجيل الدخول ===== */
+    localStorage.removeItem("loginAttempts");
+    localStorage.removeItem("blockedUntil");
+
+    localStorage.setItem("subscriptionActive", "true");
+    localStorage.setItem("userKey", key);
+    
+    document.getElementById("login-form-content").style.display = "none";
+    document.getElementById("success-animation").style.display = "block";
+
+    setTimeout(() => {
+        window.location.href = "subjects.html";
+    }, 3000);
+
+  } catch (error) {
+
+    registerFailedAttempt(); // 👈 تسجيل المحاولة الفاشلة
+
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+  }
+};
+
+window.togglePassword = function() {
+    const input = document.getElementById("passwordInput");
+    input.type = input.type === "password" ? "text" : "password";
+};
+
+window.startTrial = function() {
+    window.location.href ="trial.html"; 
+};
+
+async function checkFreeStatus() {
+    try {
+        const settingsRef = doc(db, "appSettings", "settings");
+        const snap = await getDoc(settingsRef);
+        
+        if (snap.exists()) {
+            const data = snap.data();
+            if (data.isAppFree === true) {
+                window.location.href = "subjects.html";
+            }
+        }
+    } catch (e) {
+        console.log("Error checking free status:", e);
+    }
+}
+
+checkFreeStatus();
+
+</script></body>
+</html>

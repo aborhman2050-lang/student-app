@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاختبار</title>
+<script src="questions.js"></script>
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Segoe UI',Tahoma;
+background:linear-gradient(135deg,#f0fdf4,#ecfdf5,#f8fafc);
+direction:rtl;
+color:#14532d;
+}
+
+/* ===== Navbar ===== */
+.navbar{
+background:white;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+padding:1rem;
+border-bottom:4px solid #22c55e;
+}
+
+.navbar-container{
+max-width:1000px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.btn-back{
+background:none;
+border:none;
+color:#16a34a;
+font-weight:bold;
+cursor:pointer;
+font-size:16px;
+}
+
+/* ===== المحتوى ===== */
+
+.container{
+max-width:900px;
+margin:30px auto;
+padding:20px;
+}
+
+/* شريط التقدم */
+.progress{
+height:10px;
+background:#e5e7eb;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:15px;
+}
+
+.progress-bar{
+height:100%;
+background:linear-gradient(90deg,#16a34a,#22c55e);
+width:0%;
+transition:0.4s;
+}
+
+/* المؤقت */
+.timer{
+text-align:center;
+font-size:18px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+/* السؤال */
+.question-card{
+background:white;
+padding:25px;
+border-radius:20px;
+margin-bottom:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.06);
+transition:.3s;
+border:2px solid transparent;
+}
+
+.question-card:hover{
+border-color:#22c55e;
+}
+
+.question{
+font-size:18px;
+font-weight:700;
+margin-bottom:15px;
+}
+
+/* الخيارات */
+.option{
+display:block;
+padding:10px 15px;
+border-radius:12px;
+margin-bottom:10px;
+cursor:pointer;
+border:1px solid #e5e7eb;
+transition:.3s;
+}
+
+.option:hover{
+background:#dcfce7;
+border-color:#22c55e;
+}
+
+.option input{
+margin-left:8px;
+}
+
+/* تلوين */
+.correct{
+border:2px solid #16a34a !important;
+background:#dcfce7 !important;
+}
+
+.wrong{
+border:2px solid #dc2626 !important;
+background:#fee2e2 !important;
+}
+
+/* زر */
+.submit-container{
+text-align:center;
+margin-top:30px;
+}
+
+.submit-btn{
+background:linear-gradient(135deg,#16a34a,#22c55e);
+color:white;
+padding:12px 30px;
+border:none;
+border-radius:14px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 8px 20px rgba(34,197,94,0.3);
+}
+
+.submit-btn:hover{
+transform:translateY(-3px);
+}
+
+.result-box{
+background:white;
+padding:30px;
+border-radius:20px;
+margin-top:40px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.review-item{
+background:#f9fafb;
+padding:15px;
+border-radius:12px;
+margin-bottom:10px;
+text-align:right;
+}
+.footer{
+margin-top:60px;
+background:linear-gradient(135deg,#14532d,#166534);
+color:#d1fae5;
+text-align:center;
+padding:2rem;
+font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="navbar-container">
+<button class="btn-back" onclick="goBack()"></button>
+
+<h3 class="navbar-title-center" id="testTitle">
+الاختبار النهائي
+</h3>
+
+<div style="width:90px;"></div>
+</div>
+</nav>
+<div class="container">
+
+<div class="timer" id="timer"></div>
+
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div id="examContainer"></div>
+
+<div class="submit-container">
+<button class="submit-btn" id="submitBtn" onclick="finishExam()">تصحيح الاختبار</button>
+</div>
+
+<div id="resultBox"></div>
+
+</div>
+
+<script>
+
+/* رجوع */
+function goBack(){
+window.location.href="subject-detail.html";
+}
+
+/* =========================
+   جلب المادة والاختبار
+========================= */
+
+const subjectKey = localStorage.getItem('testSubject');
+const selectedTestIndex = localStorage.getItem('selectedTest');
+
+/* حماية لو لم يتم تحديد اختبار */
+if(!subjectKey || selectedTestIndex === null){
+alert("لم يتم اختيار اختبار");
+window.location.href="subject-detail.html";
+}
+
+/* جلب الأسئلة بدون تكرار */
+if(
+  !QUESTION_BANK[subjectKey] ||
+  !QUESTION_BANK[subjectKey].tests ||
+  !QUESTION_BANK[subjectKey].tests[selectedTestIndex]
+){
+  alert("حدث خطأ في تحميل الاختبار");
+  window.location.href="subject-detail.html";
+}
+
+if (
+   !QUESTION_BANK[subjectKey] ||
+   !QUESTION_BANK[subjectKey].tests ||
+   !QUESTION_BANK[subjectKey].tests[selectedTestIndex]
+) {
+   alert("حدث خطأ في تحميل الاختبار");
+   window.location.href = "subject-detail.html";
+}
+
+let questions = QUESTION_BANK[subjectKey].tests[selectedTestIndex].questions;
+/* =========================
+   مؤقت 30 دقيقة
+========================= */
+
+let time = 1800;
+const timerEl = document.getElementById("timer");
+
+const countdown = setInterval(()=>{
+time--;
+
+let m=Math.floor(time/60);
+let s=time%60;
+
+timerEl.innerText="الوقت المتبقي: "+m+":"+(s<10?"0":"")+s;
+
+if(time<=0){
+finishExam();
+}
+},1000);
+
+
+/* =========================
+   عرض الأسئلة
+========================= */
+
+const container=document.getElementById("examContainer");
+
+questions.forEach((q,index)=>{
+
+let optionsHTML="";
+
+if(q.type==="tf"){
+optionsHTML+=`
+<label class="option">
+<input type="radio" name="q${index}" value="true"> صح
+</label>
+
+<label class="option">
+<input type="radio" name="q${index}" value="false"> خطأ
+</label>
+`;
+}
+
+if(q.type==="mcq"){
+q.options.forEach(opt=>{
+optionsHTML+=`
+<label class="option">
+<input type="radio" name="q${index}" value="${opt}"> ${opt}
+</label>
+`;
+});
+}
+
+container.innerHTML+=`
+<div class="question-card" id="card${index}">
+<div class="question">${index+1}) ${q.question}</div>
+${optionsHTML}
+</div>
+`;
+});
+
+
+/* =========================
+   شريط التقدم
+========================= */
+
+function updateProgress(){
+const answered = document.querySelectorAll("input[type=radio]:checked").length;
+document.getElementById("progressBar").style.width =
+(answered/questions.length)*100+"%";
+}
+
+document.addEventListener("change",updateProgress);
+
+
+/* =========================
+   تصحيح الاختبار
+========================= */
+
+let finished=false;
+
+function finishExam(){
+
+if(finished) return;
+finished=true;
+
+clearInterval(countdown);
+document.getElementById("submitBtn").style.display="none";
+
+let score=0;
+let reviewHTML="";
+
+questions.forEach((q,i)=>{
+
+const selected=document.querySelector(`input[name="q${i}"]:checked`);
+const card=document.getElementById(`card${i}`);
+
+let userAnswer=selected?selected.value:null;
+
+if(userAnswer===q.answer){
+
+score++;
+card.classList.add("correct");
+
+}else{
+
+card.classList.add("wrong");
+
+reviewHTML+=`
+<div class="review-item">
+<p><strong>السؤال ${i+1}</strong></p>
+<p style="color:red">إجابتك: ${userAnswer||"لم تجب"}</p>
+<p style="color:green">الإجابة الصحيحة: ${q.answer}</p>
+</div>
+`;
+}
+
+});
+
+let percent=Math.round((score/questions.length)*100);
+
+document.getElementById("resultBox").innerHTML=`
+<div class="result-box">
+<h2>🎓 انتهى الاختبار</h2>
+<h1>${score} / ${questions.length}</h1>
+<h2>${percent}%</h2>
+${reviewHTML || "<p style='color:#16a34a;margin-top:15px;'>ممتاز 👏 جميع الإجابات صحيحة</p>"}
+</div>
+`;
+
+window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+}
+
+</script>
+<footer class="footer">
+&copy; 2026 دليل التميز | جميع الحقوق محفوظة
+</footer>
+<script src="layout.js"></script>
+</body>
+</html>

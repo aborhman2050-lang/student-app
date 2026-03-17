@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دروس الفيزياء  - أكاديمية التميز</title>
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1fdf6; /* لون الخلفية الفاتح من الصورة */
+            direction: rtl;
+        }
+
+        /* الهيدر العلوي الأخضر */
+        .header-section {
+            background-color: #22c55e;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* مربع البحث */
+        .search-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            box-sizing: border-box;
+        }
+
+        /* البطاقة (نفس الصورة بالضبط) */
+        .lesson-card {
+            background-color: white;
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 6px solid #16a34a; /* الخط الأخضر العلوي */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lesson-title {
+            color: #14532d;
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* الزر الأحمر العريض */
+        .btn-watch {
+            background: linear-gradient(to right, #ef4444, #dc2626);
+            color: white;
+            text-decoration: none;
+            width: 100%;
+            padding: 14px 0;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-watch i {
+            font-size: 20px;
+        }
+
+        /* الفوتر */
+footer{
+background:linear-gradient(135deg,#14532d,#166534);
+color:#d1fae5;
+text-align:center;
+padding:2rem;
+margin-top:4rem;
+}
+        .page-title{
+text-align:center;
+display:inline-block;
+padding:14px 40px;
+border-radius:20px;
+margin:0 auto 50px auto;
+font-size:28px;
+font-weight:700;
+
+background:linear-gradient(white,white) padding-box,
+linear-gradient(135deg,#16a34a,#22c55e) border-box;
+
+border:3px solid transparent;
+box-shadow:0 10px 25px rgba(34,197,94,0.25);
+color:#166534;
+}
+    </style>
+</head>
+<body>
+
+
+
+<div class="container">
+    <div style="text-align:center;">
+<h2 class="page-title">
+شروحات الفيزياء 📘</h2>
+</div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="ابحث عن عنوان درس معين..." onkeyup="filterLessons()">
+    </div>
+
+    <div id="lessonsList">
+        </div>
+</div>
+
+<footer class="footer">
+<p>&copy; 2026 دليل التميز. جميع الحقوق محفوظة.</p>
+</footer>
+
+<script>
+const lessons = [
+    {title: "الدرس الأول - وحدات القياس", link: "https://youtu.be/7MgWMVfSXVI?si=OYs-dwantNJFhOho"},
+    {title: "الدرس الثاني - وحدات القياس", link: "https://youtu.be/NZiXbL15Fqk?si=MdRnxTkJTKSCXUZX"},
+    {title: "الدرس الثالث - أسئلة وزارية على وحدات القياس", link: "https://youtu.be/uju45vtg8nM?si=YU5yi-OA4Ugb2Oo5"},
+    {title: "الوحدة الأولى: كمية التحرك الخطي وتمارين وزارية - 1", link: "https://youtu.be/_u4iL5jM2RU?si=c6e_TVPw5XSJo_w0"},
+    {title: "فيزياء الوحدة الأولى: الدفع - 2", link: "https://youtu.be/K7CgajQ_38I?si=l0eB7d2iVqMb73Zh"},
+    {title: "مسائل على درسي الدفع وكمية التحرك - 3", link: "https://youtu.be/N9oAsRybNo4?si=ObAzG6uSr2RdKA9V"},
+    {title: "قانون حفظ كمية التحرك الخطي والتصادم المرن في بعد واحد", link: "https://youtu.be/8M9FhDGvBg0?si=U5sjdA25jYOXl1T3"},
+    {title: "مسائل على التصادم المرن في بعد واحد ( 5 )", link: "https://youtu.be/fvNqdG-7iN0?si=PG989gzK-6RmrCu9"},
+    {title: "التصادم المرن - مسألة خاصة لأصحاب الفضول", link: "https://youtu.be/dxgOBbCExVI?si=WUdskLxYz6CU115o"},
+    {title: "التصادم غير المرن في بعد واحد - أسئلة وزارية 1", link: "https://youtu.be/2-zAThKMyTE?si=C7Ayk6yRfhaH3Udq"},
+    {title: "التصادم في بعدين - التصادم المرن ( 1 )", link: "https://youtu.be/pjgwffHl-VQ?si=4ViuqYdMuoTmlMhO"},
+    {title: "مسائل على التصادم في بعدين - المرن ( 3 ) واستنتاج القانون", link: "https://youtu.be/La5gnhxHGNc?si=B7ZQE1Y-fLg97Fxf"},
+    {title: "التصادم غير المرن في بعدين ( 1 )", link: "https://youtu.be/3kP8Cl_C0Fs?si=zsNz1LtafaRm7dpr"},
+    {title: "الصواريخ ذاتية الدفع ( النفاثة )", link: "https://youtu.be/HMzC6etbztM?si=x-cMQYky9-6XljOR"},
+    {title: "سرعة الافلات من الجاذبية", link: "https://youtu.be/1th6Jz3-SgY?si=7ryKhm4Xkxm3g_vY"},
+    {title: "الاقمار الصناعية 1", link: "https://youtu.be/DC_8mTGW8gs?si=sbbQqwzX9zK70pE-"},
+    {title: "حركة الأقمار الصناعية - الجانب النظري", link: "https://youtu.be/HagUVzrp-g8?si=yHhsQ_qoelIi2Pkn"},
+    {title: "كمية التحرك الزاوي 1", link: "https://youtu.be/a_Z1lmHAqro?si=R-Oe_hDVXluxtexE"},
+    {title: "كمية التحرك الزاوي 2", link: "https://youtu.be/wEUYg4LZaCE?si=JO3p-ITrNsIz5E6m"},
+    {title: "كمية التحرك الزاوي 3", link: "https://youtu.be/AkhacTqdh28?si=mo2Scoq2NjchZJBp"},
+    {title: "حركة المقذوفات / قوانين حركة المقذوفات كاملة مع الإخت...", link: "https://youtu.be/AO9M_eUkces?si=1Jfy6ARJDvzM6CAg"},
+    {title: "حركة المقذوفات / شرح الجانب النظري مع ملاحظات كثر السؤا...", link: "https://youtu.be/dW45dQYW2tI?si=O4JE1ZE1t2WCYzce"},
+    {title: "مسائل على حركة المقذوفات / مع التركيز على الأسئلة الوزارية", link: "https://youtu.be/x1tgJVBAIbg?si=sHKJ_25-U4dCRlC6"},
+    {title: "حركة المقذوفات / تكملة حل مسائل وزارية بأفكار مختلفة", link: "https://youtu.be/D4jgyuMU5Q8?si=YhBmczoyEpQB_nVw"},
+    {title: "أسئلة وزارية 2022م على حركة المقذوفات", link: "https://youtu.be/RI2tBMuSfjI?si=K8TyY8CrfkHDdeef"},
+    {title: "مقدمة لدرس المقذوفات", link: "https://youtu.be/VDimdlKIAzs?si=DraN9bQbzHgJ9EyB"},
+    {title: "حركة المقذوفات 2", link: "https://youtu.be/Omb1CK4UTko?si=nKfVXcNoqYfdjarp"},
+    {title: "حركة المقذوفات 3", link: "https://youtu.be/b27aUQR3yX8?si=maP5XeTqwHiN4U5v"},
+    {title: "مسائل على المقذوفات 4", link: "https://youtu.be/9kIHo7hlafA?si=vyHz6o0qCX3uuVYz"},
+    {title: "حركة المقذوفات 5", link: "https://youtu.be/J6VgyTbJmdc?si=nZsvyMPxAGXovdar"},
+    {title: "حركة المقذوفات 6", link: "https://youtu.be/y4CJz2fsfos?si=y_3gznVsjmu2F1PO"},
+    {title: "حركة المقذوفات 7", link: "https://youtu.be/6AeU7gAg_sg?si=Y5wYwE425rJLZt2X"},
+    {title: "حركة المقذوفات 8", link: "https://youtu.be/uvQ3dZT4GVk?si=DtHoJYGxXce5-Sxs"},
+    {title: "حركة المقذوفات 9", link: "https://youtu.be/u5GxoP0by7k?si=IG6-aTKlbdWFhvqg"},
+    {title: "حركة المقذوفات 14", link: "https://youtu.be/2S7cTb8bz0Y?si=pjrczNV6c4U-NwqR"},
+    {title: "ملخص قوانين المقذوفات مع المقارنة بين أنواع المقذوفات", link: "https://youtu.be/g_69T2VsI-A?si=djr8IAXT9c0voMAp"},
+    {title: "إستخدام الآلة الحاسبة في الفيزياء", link: "https://youtu.be/JoP4hTeOC-Q?si=HCx4Bxbg8LLm_3GC"},
+    {title: "حركة الأقمار الصناعية والكواكب", link: "https://youtu.be/liVj4soH3LU?si=HrkC4epPsRqdGHE_"},
+    {title: "حل أسئلة وزارية 2023 م - فيزياء - الوحدة الأولى نموذج", link: "https://youtu.be/fi3_Rj-mWqI?si=OK25hl40GlySW_dK"},
+    {title: "مراجعة نهائية ليلة الاختبار للوحدة الاولى فيزياء ثالث ثانوي", link: "https://youtu.be/kiE_7dfSH6Q?si=Envlr_U7L61C7tRR"},
+    {title: "حل أسئلة وزارية 2024م فيزياء الوحدة (1) إثبات وحدات القياس", link: "https://youtu.be/wSEVVNaNoNQ?si=X98hkFAC7CNYWufJ"},
+    {title: "الوحدة الثانية التيار المتردد 1", link: "https://youtu.be/2s2kJWQxU3o?si=4qNeiBXDDYZqRAYr"},
+    {title: "فيزياء الوحدة 2 مميزات التيار المتردد", link: "https://youtu.be/4K-SLfjOmyE?si=zw3ueEkyHe_yt4FK"},
+    {title: "الوحدة 2 تجربة فاراداي", link: "https://youtu.be/rbc8k_ekhn0?si=PbZPlBpZAp1DRHg1"},
+    {title: "الوحدة 2 ظاهرة الحث الكهرومغناطيسي", link: "https://youtu.be/iD2obeFIGPs?si=ceYmdWlp-SjkBfFi"},
+    {title: "الوحدة 2 - الدينامو ( المولد الكهربائي )", link: "https://youtu.be/5ehaiJtA1ro?si=uTWG3LKDJ7aH76pM"},
+    {title: "تجربة فارادي + الدينامو", link: "https://youtu.be/bC1ZHyfdmaE?si=XrbFuzh9vK_brGpo"},
+        {title: "قوانين لحل مسائل الدينامو - ١", link: "https://youtu.be/4zHS-yiA2uA?si=NqK_E9RtVtCKXKtS"},
+    {title: "قوانين لحل مسائل الدينامو - ٢", link: "https://youtu.be/zBVqTZc65L4?si=s5iCLsHpWjwz6da2"},
+    {title: "مسائل وزارية على درس المولد الكهربائي ( ١ )", link: "https://youtu.be/fLw361KiFvU?si=xN2zFXMpAZSoaJCR"},
+    {title: "مسائل بأفكار مختلفة وزارية على المولد الكهربائي ( ٢ )", link: "https://youtu.be/EGlxKPFOU4U?si=9k3eXYDwu0RXQvfH"},
+    {title: "مسائل على الدينامو ١", link: "https://youtu.be/GhCUaZcyYKs?si=1FgHvEzvhJ80M6B_"},
+    {title: "مسائل وزارية على الدينامو ٢", link: "https://youtu.be/u9nXaCNYfnU?si=hmDg8mU4gT_4G9pb"},
+    {title: "مسائل وزارية على الدينامو ٣", link: "https://youtu.be/ssf-AH-Hf_k?si=iwvB3i6fDOXcTH4o"},
+        {title: "القيمة الفعالة لشدة التيار المتردد", link: "https://youtu.be/s2EDUzArYLM?si=joq8TSZkR4WdB7ms"},
+    {title: "أسئلة وزارية 2022م - فيزياء الوحدة الثانية - المولد الكهربائي", link: "https://youtu.be/u7HTS3vTGzY?si=ePySbbDwCCvQJOE-"},
+    {title: "الأميتر الحراري", link: "https://youtu.be/aJtFNV6VRD4?si=9CU-W9vCeF4fdDFI"},
+    {title: "الأميتر الحراري 2 مع تمارين", link: "https://youtu.be/bhdcsl8t52k?si=PRmSvHsZlPWHEe1E"},
+    {title: "دوائر التيار المتردد أولاً دائرة المقاومة 1", link: "https://youtu.be/OVHCV7n0WaI?si=hs0nz5ObN0Uma4Qn"},
+    {title: "دوائر التيار المتردد أولاً دائرة المقاومة 2", link: "https://youtu.be/8qiQyCTJqQg?si=8iSB9j2dBqWJ2S4t"},
+    {title: "توصيل المقاومات 3", link: "https://youtu.be/Y39NYoY2PzU?si=k0FGezIt1JrBLkwa"},
+      {title: "مسائل على درس المقاومات 4", link: "https://youtu.be/CO_IUvhTJTc?si=MMnfZJBOrNiZq8Ca"},
+    {title: "دائرة المكثف 1 -  ", link: "https://youtu.be/aQJVCyr0hHU?si=p7EqDGNNY76GGYY9"},
+    {title: "دائرة المكثف 2 -   ", link: "https://youtu.be/v3PrcW8V5S4?si=hZ_BcWI4m1ZaQ7Mg"},
+    {title: "دائرة المكثف 3 -   ", link: "https://youtu.be/FNz-uF1e_CQ?si=KSZE84Pnk2CI9y9B"},
+    {title: "دائرة مكثف 4 -    ", link: "https://youtu.be/7QFIGTapGe0?si=lkc5zGTKNVONFBiR"},
+    {title: "دائرة مكثف مسائل - 5 -   ", link: "https://youtu.be/fU-C8Tetem8?si=-t6Ppx61FdRpk3bA"},
+        {title: "دائرة الملف ( محث )", link: "https://youtu.be/CgPH2Bfq1ZQ?si=fiBXPssUXfC6UGxv"},
+    {title: "المفاعلة الحثية ( م حث )", link: "https://youtu.be/lIFhC2ZLD5I?si=jV7RFGP_i1oqLNEA"},
+    {title: "مسائل على المفاعلة الحثية أ / محمد الدوكري", link: "https://youtu.be/vs2rsGGd9-c?si=TvFNxL6t0TtHhGSK"},
+    {title: "توصيل الملفات مع مسائل تطبيقية", link: "https://youtu.be/8wm789rlaIg?si=WUq1g60UH8MyjvKp"},
+    {title: "المعاوقة - درس مهم", link: "https://youtu.be/QkxGkA_OZqs?si=j43QT59hgBXRoZ-O"},
+    {title: "مسائل على درس المعاوقة    ", link: "https://youtu.be/OMPRrxq3rLU?si=9DneMQni38NQtFVk"},
+    {title: "مسائل وزارية على درس المعاوقة", link: "https://youtu.be/fZnHBmsBUCk?si=KLWcZzJxrcWesHxw"},
+        {title: "دائرة الرنين -       ", link: "https://youtu.be/CClx28O32xA?si=VrJSXKkPkeWBdbiX"},
+    {title: "الدائرة المهتزة", link: "https://youtu.be/Mjz02L-LVkI?si=2aIAR0rXHM1fkDpw"},
+    {title: "الدائرة المهتزة - 2 -", link: "https://youtu.be/ZaCGfDDYu10?si=ikWhgbAz84dFJlh-"},
+    {title: "مسائل وزارية على الدائرة المهتزة والرنين", link: "https://youtu.be/T48o3bA-GGA?si=gz6LZxrKivpDfbOZ"},
+    {title: "قوانين الوحدة الثانية في الفيزياء", link: "https://youtu.be/HOwz5qjKMxk?si=UoCbj25lsaxImzRg"},
+    {title: "أسئلة وزارية 2022م فيزياء الوحدة الثانية - النموذج ( 1 )", link: "https://youtu.be/oq0y-evSBc0?si=TW2m3avyKER525la"},
+    {title: "أسئلة وزارية 2022م - فيزياء الوحدة الثانية - دوائر التيار المتردد", link: "https://youtu.be/iQlx4PejKQs?si=jgv7qxseCoNZ-y-q"},
+        {title: "مسائل وزارية على دوائر التيار المتردد ( 1 )", link: "https://youtu.be/L94rk8sPq_c?si=i-xEVdntQxV7hLUU"},
+    {title: "مسائل وزارية على دوائر التيار المتردد ( 2 )", link: "https://youtu.be/CYXuPLMuLWw?si=_FFBehYu2EUq70Yk"},
+    {title: "حل اختبار الفيزياء 2023م الأسئلة الخاصة بالوحدة الثانية", link: "https://youtu.be/vyHrcdcSm6o?si=ivYNaTjc1wbZJ1BY"},
+    {title: "مراجعة شاملة للوحدة الثانية - فيزياء ثالث ثانوي ( 1 ) 2024م", link: "https://youtu.be/kuWA2xopCuA?si=licj1rYCJlmMoxx-"},
+        {title: "الوحدة الثالثة - أشباه الموصلات", link: "https://youtu.be/dv9sPWGadVI?si=ZM53-RoITQO2I5ZZ"},
+    {title: "الدرس الثاني من الوحدة الثالثة - شبه الموصل غير النقي", link: "https://youtu.be/nBiJCWJogpE?si=PhgSx0uWHxGh9SNe"},
+    {title: "الوصلة الثنائية ( الدايود ) تركيب الوصلة الثنائية", link: "https://youtu.be/ewXSEOFNtwk?si=1OFKoVTPnF5-lvvp"},
+    {title: "طرق توصيل الوصلة الثنائية بالدائرة الكهربية", link: "https://youtu.be/wSsbHRuRJME?si=NpX3PD8unQNf_iUP"},
+    {title: "فيما تستخدم الوصلة الثنائية", link: "https://youtu.be/BVZ0KX8u-ps?si=MKmuXESHdcQy06MW"},
+    {title: "الترانزستور", link: "https://youtu.be/u4jaeqbqpGU?si=apk2F1F4E4rLfd07"},
+    {title: "طرق توصيل الترانزستور", link: "https://youtu.be/eRBH7FFdZqk?si=wY9npAsmLtbbfR3j"},
+    {title: "قوانين التكبير في الترانزستور", link: "https://youtu.be/v2eYmMR5wVc?si=drYNZ38AK1Sue4SO"},
+    {title: "مسائل وزارية على الوحدة الثالثة عملية التكبير بالترانزستور", link: "https://youtu.be/gNJXaVUI208?si=16uJyhkdNK7Qdz-r"},
+    {title: "ثانياً: طريقة التكبير بالباعث المشترك", link: "https://youtu.be/eEC7phYAyMU?si=IzDI7h7tu2g_TnDJ"},
+    {title: "مسائل على عملية التكبير في الترانزستور", link: "https://youtu.be/6nJE-2Vm4-g?si=fualnOznmzhkGLHQ"},
+    {title: "قوانين الوحدة الثالثة في الفيزياء", link: "https://youtu.be/3_5uJkezAj8?si=aHp6nnMP7VZNil-c"},
+    {title: "حل أسئلة النماذج الوزارية للعام 2021 م الخاصة بالوحدة الثالثة", link: "https://youtu.be/1f9tXQzQEZs?si=sANvKYMFCbi9TKpL"},
+    {title: "حل الأسئلة الوزارية في نماذج 2020م الخاصة بالوحدة الثالثة", link: "https://youtu.be/jpWhVVXt_0Q?si=yRDixhdEIM6DURjN"},
+    {title: "حل اختبار الفيزياء 2023م أسئلة الوحدة الثالثة في نموذج", link: "https://youtu.be/RKPHDpEgRRc?si=2Y5TXz82oKmi2dro"},
+    {title: "الدرس الأول - هل الغازات موصلة أم عازلة - الوحدة الرابعة", link: "https://youtu.be/r8XMTAfG77o?si=fSYF1c52SjKfIuzb"},
+    {title: "التفريغ الكهربي في الغازات - الدرس الثاني من الوحدة الرابعة", link: "https://youtu.be/ZcynUH5uMW8?si=YHo86YpacbAgZg9T"},
+    {title: "الوحدة الرابعة - التوصيل الكهربي في الغازات", link: "https://youtu.be/6It6K5cXkbk?si=f0sQNAzwoOZUUBR3"},
+    {title: "الوحدة الرابعة - كاشف الذبذبات", link: "https://youtu.be/fzfd5KoJjxw?si=_rEu15aAlS1Tv-AO"},
+    {title: "الوحدة الرابعة - مسائل على درس الرادار", link: "https://youtu.be/fL-ttqIsZ00?si=6ne3xVfOFggSoruc"},
+    {title: "الوحدة الرابعة - عملية الارسال الإذاعي", link: "https://youtu.be/y6f8jd3oujM?si=sHhlC5cWKsBjkijj"},
+    {title: "الوحدة الرابعة - عملية الإستقبال الإذاعي", link: "https://youtu.be/zlUKCXnQmDU?si=WhrXbYls3kmqoEj4"},
+    {title: "الوحدة الرابعة - كاميرا التصوير التلفزيوني ( الإيقونوسكوب )", link: "https://youtu.be/vU32UAyiaRY?si=y5lVabl-JOyTTLR_"},
+    {title: "الوحدة الرابعة عملية الإرسال في التلفزيون", link: "https://youtu.be/P7jbX4vS-Y4?si=LP9pdnuwa0arEE8K"},
+    {title: "جهاز الإستقبال في التلفزيون", link: "https://youtu.be/GaSoppFj1tY?si=5zkv5ba3_tmbyCdG"},
+    {title: "التلفزيون الملون", link: "https://youtu.be/knxy9ysRmco?si=Xx6HYkS2xEzQPWY5"},
+    {title: "الوحدة الرابعة - مكبر الصوت الديناميكي ( السماعة )", link: "https://youtu.be/SMpbQDI_2A0?si=zSjV63CpqIcKrP5K"},
+    {title: "الوحدة الرابعة - الرادار", link: "https://youtu.be/TRSg7aq7_e4?si=WskpxJhKdFS8SvNh"},
+    {title: "خطوات عملية الإرسال في درس التلفزيون", link: "https://youtu.be/B44uVaJLGxk?si=EStZj0Eguj41d3g-"},
+        {title: "خطوات عملية الإستقبال التلفزيوني", link: "https://youtu.be/2Azt4UnbcKQ?si=PJA2NvlOjVpVqZEz"},
+    {title: "حل أسئلة الوحدة الرابعة في الفيزياء - في الاختبارات الوزارية للعام 2021 م", link: "https://youtu.be/QIV3rcEHCG8?si=mroV6BMpPT_XoGwW"},
+    {title: "حل أسئلة نماذج 2021 م ( 4 ، 5 ، 6 ) الخاصة بالوحدة الرابعة فيزياء", link: "https://youtu.be/iZe2GPGNBII?si=6H7wMQVzeNCGLjPP"},
+    {title: "حل أسئلة نماذج 2021 م ( 7 ، 8 ، 9 ، 10 ) الخاصة بالوحدة الرابعة فيزياء", link: "https://youtu.be/Ip_3ghfJ40I?si=jZ_aL7CyBdI_aAwU"},
+    {title: "حل الأسئلة الوزارية 2022م - الوحدة الرابعة في الفيزياء", link: "https://youtu.be/UVLYuHzDT7o?si=R_X6PN8X6RJM4WeY"},
+    {title: "حل تقويم الوحدة الرابعة - فيزياء ثالث ثانوي", link: "https://youtu.be/4oBjR8vXTmU?si=Jf-EIUCMgJKq8USW"},
+    {title: "حل الأسئلة الوزارية 2023م فيزياء - الوحدة الرابعة", link: "https://youtu.be/I6bV0O18AjY?si=XN6a1wnj_OPc5S5s"},
+    {title: "حل الاختبارات الوزارية 2024م فيزياء - الوحدة الخامسة", link: "https://youtu.be/cYsWQhVXAJo?si=3zG3AeT9ZhCYKgay"},
+    {title: "حل الاختبارات الوزارية 2024م فيزياء - الوحدة الرابعة", link: "https://youtu.be/dMetWhhMXQQ?si=fttWFNkYdnc89j2d"},
+        {title: "الوحدة الخامسة في الفيزياء نظرية دالتون وطومسون", link: "https://youtu.be/JApzYN_yXno?si=KenOfgr3TlmZHJzw"},
+    {title: "طيف المصادر الضوئية - الوحدة الخامسة", link: "https://youtu.be/a5yaOvmNu-w?si=cWbq7Vn2u8vL5zCo"},
+    {title: "طيف العناصر الكيميائية - الوحدة الخامسة", link: "https://youtu.be/gRFjAPw-SYg?si=LyytFifUjsFfUODM"},
+    {title: "طيف ذرة الهيدروجين وعلاقة بالمر", link: "https://youtu.be/6brVKdJHyz8?si=rKbmF05q-r__egLZ"},
+    {title: "الوحدة الخامسة تجربة رذرفورد", link: "https://youtu.be/wRoE6591RUc?si=ULrFQGDVIYK9wP3r"},
+    {title: "اشعاع الجسم الاسود     ", link: "https://youtu.be/S72kDtV00nM?si=GigZ5DEGZD4lElt2"},
+    {title: "نظرية الكم لبلانك     ", link: "https://youtu.be/na33TCmBktU?si=uf4IUC6ZP1KcoL0j"},
+    // الوحدة الخامسة: الفيزياء الذرية
+    {title: "نظرية بور ( بوهر ) لذرة الهيدروجين", link: "https://youtu.be/_Ez0L5T7o_g?si=kIrnaYTC82yWBLWD"},
+    {title: "كيفية ايجاد نصف قطر وسرعة وطاقة الالكترون في كل مدار", link: "https://youtu.be/6l51EUZyTIc?si=ZuhkCHBom9WfiPfP"},
+    {title: "تطبيقات وزارية على قوانين الوحدة الخامسة - نظرية بوهر", link: "https://youtu.be/ysLixzEwkaw?si=mE8w3V8U5jgSyS_x"},
+    {title: "الوحدة الخامسة - مخطط مستويات الطاقة", link: "https://youtu.be/KyCyUKzQdy4?si=28oDFwugeHWzioPH"},
+    {title: "سلاسل الطيف لذرة الهيدروجين", link: "https://youtu.be/9TK0Z3_a-T0?si=iU3qNZtXajiD-tGc"},
+    {title: "تطبيقات وزارية على قوانين الوحدة الخامسة - نظرية بور", link: "https://youtu.be/0GY8Ae6XSSg?si=9L1XkaO88Owzbhxn"},
+    {title: "نظرية بور ( بوهر ) تطبيقات وزارية متنوعة", link: "https://youtu.be/zgjd2x3pHmE?si=Ai-z_T_q65dEqabE"},
+        {title: "عيوب نظرية بوهر ( بور ) الوحدة الخامسة", link: "https://youtu.be/WGPfO0hekLw?si=vJLyIEqFdWcM0s6M"},
+    {title: "الأسئلة الوزارية في نماذج 2021 م ( 1 ، 2 ، 3 ) على الوحدة الخامسة", link: "https://youtu.be/os27dX6SDak?si=lOz-VMbsQyzOhT8c"},
+    {title: "حل أسئلة النماذج الوزارية 2021 م ( 4 ، 5 ، 6 ) على الوحدة الخامسة", link: "https://youtu.be/TUXaKQlLRO0?si=HU0niKRr_kUmpMHE"},
+    {title: "حل الأسئلة الوزارية في نماذج 2021 م ( 7 ، 8 ، 9 ، 10 ) على الوحدة الخامسة", link: "https://youtu.be/6oBmR5BqWN4?si=fr9g7xSERkfrh8YY"},
+    {title: "حل أسئلة النماذج الوزارية 2022م على الوحدة الخامسة", link: "https://youtu.be/17xqMqnekyc?si=U2gCHkOYQh74NfBi"},
+    {title: "مراجعة شاملة للوحدة الخامسة - فيزياء ثالث ثانوي 2024م", link: "https://youtu.be/HSNxWXasmEU?si=6R9mg_4jYSzwlsxn"},
+    {title: "حل الاختبارات الوزارية 2024م فيزياء - الوحدة الخامسة", link: "https://youtu.be/cYsWQhVXAJo?si=22l3H_nCPJBGpFfl"},
+        {title: "الوحدة السادسة الظاهرة الكهروضوئية", link: "https://youtu.be/moCSXONwfYg?si=DDKwYAGmClYcStjX"},
+    {title: "الخلية الكهروضوئية - الوحدة السادسة", link: "https://youtu.be/oNtbWK0gIO8?si=64v8CGUzO3K5zZfJ"},
+    {title: "تجربة مليكان لدراسة الظاهرة الكهروضوئية", link: "https://youtu.be/liwicU7wHAI?si=TGBToPFo7BgE_svJ"},
+    {title: "جهد الايقاف مع تطبيقات على القانون - الوحدة السادسة", link: "https://youtu.be/DlVbEoevKX4?si=I2Z29sFWT9KvwCRs"},
+    {title: "تابع تجربة ملكان في دراسة الظاهرة الكهروضوئية", link: "https://youtu.be/mo2rXtKSzeY?si=9-x6lkIB7Kl_omrE"},
+    {title: "تفسير اينشتين للظاهرة الكهروضوئية", link: "https://youtu.be/oQdr1J7RPlo?si=kS_7lo7G_tjQZJz9"},
+    {title: "تمارين وزارية على الوحدة السادسة - تفسير اينشتين", link: "https://youtu.be/zV8wZCVkxts?si=cMdz3mCXj63DKGjM"},
+
+    {title: "الأشعة السينية - أشعة اكس - ( 1 ) التركيب والتعليلات", link: "https://youtu.be/WbYagbYzejQ?si=98YOrW3y-0WzrKXX"},
+    {title: "مسائل على درس الأشعة السينية ( 2 )", link: "https://youtu.be/bt5lgpUjBl0?si=JlOy4cBe4uP3cnCB"},
+    {title: "الليزر - مالمقصود بكلمة ليزر وكيف نحصل علية", link: "https://youtu.be/4_OKXESUAYQ?si=1PZvW_phjCeHDUrG"},
+    {title: "جهاز ليزر الياقوت", link: "https://youtu.be/Lf9u232n-o4?si=yNIAWNGKBkLvmNbN"},
+    {title: "حل أسئلة تقويم الوحدة السادسة - فيزياء ثالث ثانوي", link: "https://youtu.be/gK9sPia9Pos?si=LB0tf0OI50ShuorN"},
+    {title: "حل النماذج الوزارية 2022م على الوحدة السادسة في الفيزياء", link: "https://youtu.be/4B1SHqvvweQ?si=BHUAee0252Mwi-ra"},
+    {title: "مراجعة شاملة للوحدة السادسة - فيزياء ثالث ثانوي 2024م", link: "https://youtu.be/kW4xlLzatCw?si=nI2lIH6Ipez_20tl"},
+    {title: "حل الاختبارات الوزارية 2024م فيزياء - الوحدة السادسة", link: "https://youtu.be/4OAK9w8MjEU?si=kSoYO4xEMW-TBLZ1"},
+
+
+
+
+
+
+
+
+
+
+
+
+
+];
+
+
+function displayLessons(data) {
+    const list = document.getElementById("lessonsList");
+    list.innerHTML = data.map(lesson => `
+        <div class="lesson-card">
+            <div class="lesson-title">${lesson.title}</div>
+            <a href="${lesson.link}" class="btn-watch" target="_blank">
+                <i class="fab fa-youtube"></i>
+                مشاهدة الدرس
+            </a>
+        </div>
+    `).join('');
+}
+
+function filterLessons() {
+    const term = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = lessons.filter(l => l.title.toLowerCase().includes(term));
+    displayLessons(filtered);
+}
+
+// تشغيل عند فتح الصفحة
+displayLessons(lessons);
+</script>
+<script src="layout.js" defer></script>
+</body>
+</html>

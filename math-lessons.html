@@ -1,0 +1,365 @@
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دروس الرياضيات - دليل  التميز</title>
+    
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1fdf6; /* الخلفية الفاتحة جداً كما في الصور */
+            direction: rtl;
+        }
+
+        /* الهيدر العلوي الأخضر المنحني */
+        .header-section {
+            background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom-left-radius: 35px;
+            border-bottom-right-radius: 35px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+        }
+
+        .header-title {
+            color: white;
+            font-size: 19px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .container {
+            padding: 10px 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* مربع البحث */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            box-sizing: border-box;
+        }
+
+        /* تصميم البطاقة (نفس صور الفيزياء والرياضيات بالضبط) */
+        .lesson-card {
+            background-color: white;
+            border-radius: 25px;
+            padding: 25px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 6px solid #16a34a; /* الخط الأخضر العلوي المميز */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lesson-title {
+            color: #14532d;
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* الزر الأحمر العريض مع أيقونة يوتيوب */
+        .btn-watch {
+            background: #ef4444; /* اللون الأحمر من الصورة */
+            color: white;
+            text-decoration: none;
+            width: 100%;
+            padding: 14px 0;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .btn-watch:active { transform: scale(0.98); }
+
+        .btn-watch i {
+            font-size: 22px;
+        }
+
+        /* شريط حقوق الملكية (الذي طلبته) */
+        .footer-strip {
+            background-color: #064e3b; /* أخضر غامق جداً مثل صورك */
+            color: #ecfdf5;
+            text-align: center;
+            padding: 25px 10px;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+        .page-title{
+text-align:center;
+display:inline-block;
+padding:14px 40px;
+border-radius:20px;
+margin:0 auto 50px auto;
+font-size:28px;
+font-weight:700;
+
+background:linear-gradient(white,white) padding-box,
+linear-gradient(135deg,#16a34a,#22c55e) border-box;
+
+border:3px solid transparent;
+box-shadow:0 10px 25px rgba(34,197,94,0.25);
+color:#166534;
+}
+    </style>
+</head>
+<body>
+
+
+
+<div class="container">
+    <div style="text-align:center;">
+<h2 class="page-title">📘 
+    شروحات الرياضيات </h2>
+</div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 ابحث عن درس معين..." onkeyup="filterLessons()">
+    </div>
+
+    <div id="lessonsList">
+        </div>
+</div>
+
+<div class="footer-strip">
+    © 2026 دليل التميز. جميع الحقوق محفوظة.
+</div>
+
+<script>
+const lessons = [
+   
+    {title:"الجبر - الأعداد المركبة#1", link:"https://youtu.be/K05SQORR2Ws?si=rtP0IR_V1B1O9dBr"},
+    {title:"الجبر - الأعداد المركبة#2", link:"https://youtu.be/30FHFSFdANw?si=ZyRKIgGehs-W4QsM"},
+    {title:"الجبر -جمع وطرح وتساوي الأعداد المركبة", link:"https://youtu.be/dSNuyljpnXw?si=eXoguFk55QQZ0yOI"},
+    {title:"الجبر -ضرب وقسمة الأعداد المركبة بالصورة الجبرية", link:"https://youtu.be/Tw6B0uBELjE?si=XXzrxgLkQfHVeSNN"},
+    {title:"الجبر -الصورة القطبية للاعداد المركبة ", link:"https://youtu.be/JyaZah_v6_c?si=hDGdjKlhzK0kAUHK"},
+    {title:"الجبر -التحويل من الصورة القطبية للصورة الجبرية", link:"https://youtu.be/rEn_F69-Xd4?si=7cWoxEgejM1U4zti"},
+    {title:"الجبر -التحويل من الصورة الجبرية للصورة القطبية", link:"https://youtu.be/qoe7WJp6VBM?si=JcbXxRn_AO0VHorI"},
+    {title:"الجبر -القوى والجذور على الاعداد المركبة", link:"https://youtu.be/szm4QvPqSYQ?si=w26CJMShz0_4h_PB"},
+    {title:"الجبر -حل المعدلة من الدرجة الثانية للأعداد المركبة", link:"https://youtu.be/VbVRs7RVDxI?si=SxkiHMoev-QJiVB5"},
+    {title:"الجبر -مبدأ العد", link:"https://youtu.be/-BYnVLPYPZ0?si=QiuQBPfEjOKwpx3T"},
+    {title:"الجبر -المضروب ", link:"https://youtu.be/Kq-hr8E0l0A?si=ZP7Z0r6gTJFJwDrI"},
+    {title:"الجبر -التباديل وخواصها ", link:"https://youtu.be/7wIVQ21rvvM?si=ywIvYjKEltVQfrO6"},
+    {title:"الجبر -التوافيق وخواصها#2", link:"https://youtu.be/gWOoYuIz_yA?si=Zn7A8-V_ojLFC5fU"},
+    {title:"الجبر -المفكوك ذي الحدين#1", link:"https://youtu.be/R9Qh14dyPKg?si=j7zkL2E-Atg1IOtW"},
+    {title:"الجبر -التوافيق وخواصها#1", link:"https://youtu.be/DwYIwavX90c?si=LWXwyUB8_gwZviXl"},
+    {title:"الجبر -المفكوك ذي الحدين #2", link:"https://youtu.be/cPMRMpbd4V8?si=8d6FqVlC6ygguuLl"},
+    {title:"الجبر -المفكوك ذي الحدين #3", link:"https://youtu.be/47nTXc-7dvk?si=NwueVOnbHBqZHDvM"},
+    {title:"الجبر -الأسئلة الوزارية للمفكوك ذي الحدين", link:"https://youtu.be/LK-sGlEzyIE?si=N1JYVDEYxMFM9GGY"},
+    
+     {title:"     الاحتمالات الدرس الاول المفاهيم", link:"https://youtu.be/rVewvE4Y4Wg?si=r0dpQDf8WyupgQQg"},
+     {title:"     الاحتمالات الدرس الثاني -العمليات على الحوادث", link:"https://youtu.be/U3T1L6sRDIM?si=Ik6LNsVr_S8KvNMq"},
+     {title:"    الدرس الثالث-مبرهنه الاحتمالات", link:"https://youtu.be/S7bPPqIcvkg?si=3vDJclTD3P4U84Te"},
+    { title:"    تمرين وزارية(1) علا الاحتمالات", link:"https://youtu.be/maTnmrKUky8?si=uLDnWRx1B-ZVXMOi"},
+    { title:"    تمرين وزارية(2) علا الاحتمالات", link:"https://youtu.be/Km6h07dWdBQ?si=RhaID1HrNS9w7elQ"},
+      { title:"قانون الاحتمال الثاني في الاحتمالات", link:"https://youtu.be/qB7wGf1QsBE?si=nEQp6hqPv90pTdeU"},
+       {title: "القطع المكافئ - 1 -", link: "https://youtu.be/meKiigmIdHA?si=t22AAClGvTRT5IoY"},
+    {title: "تطبيقات على القطع المكافئ", link: "https://youtu.be/GsjwdD96k5U?si=s2P6fYCGyk2iJ6Ov"},
+     {title: "القطع الناقص  ", link: "https://youtu.be/rw6iaMnbzbw?si=F6RQr5ZIdlPlGK_K"},
+    {title: "تطبيقات وزارية على القطع الناقص - 1 - أ/ محمد الدوكري", link: "https://youtu.be/QWymNZ61wFU?si=uqlko_POWpVAb3P_"},
+     {title: "القطع الزائـد  ", link: "https://youtu.be/kuliEuQGuF8?si=jGfVotyut2cAAQov"},
+    {title: "تطبيقات على القطع الزائد ", link: "https://youtu.be/N2msPGVJyMU?si=xPpS_4B5tznxuYgr"},
+      {title: "انسحاب المحاور الإحداثية ", link: "https://youtu.be/ggauaGCUhVQ?si=ZNrj8h1nN7Kg54Xu"},
+    {title: "تمارين على انسحاب المحاور ", link: "https://youtu.be/hnhtZB3yKuA?si=RIMHzgOB8_YLbEXi"},
+       {title: "  الهندسه الفضائيه ", link: "https://youtu.be/8YJpg3_Qa0Y?si=2yBosBNpDKuCtoAd"},
+    
+  
+    {title:"النهايات ( 1 ) نهاية كثيرة الحدود", link:"https://youtu.be/qI93vbpim_w?si=nBFCg6r30eH_pHjE"},
+    {title:"النهايات - مبرهنة ( 6 - 1 ) ( 2 )", link:"https://youtu.be/Z0FViUhb4QA?si=UemQp2gBBbtzo0WV"},
+    {title:"النهايات المبرهنة ( 6 - 2 ) نهاية حاصل ضرب دالة صفرية في دالة محدودة", link:"https://youtu.be/-1GOxXHlTCM?si=bZAniTzpx1A3zC99"},
+    {title:"تمارين وزارية على النهايات تطبق عليها المبرهنة الأولى أو الثانية مباشرة", link:"https://youtu.be/Fr6mmgjEk9Q?si=1gdoHnNl1kKKfBN8"},
+    {title:"النهايات - استخدام الاسناد مع تثبيت النسبة في حل التمارين", link:"https://youtu.be/TLuk3TusJKU?si=ZCvJhzvNDMfzbENh"},
+    {title:"النهايات - استخدام الاسناد مع تغيير النسبة في حل التمارين", link:"https://youtu.be/bGnR4OsmNFM?si=YC1M_itbuINUJQEE"},
+
+
+    {title:"النهايات - طرق حل الاشكاليات في مسائل النهايات ( 7 )", link:"https://youtu.be/-Vh0ddltKc8?si=f2F0U9G_G77n6xWp"},
+    {title:"نهايات - طرق حل الاشكاليات في حل مسائل النهايات ( 8 )", link:"https://youtu.be/JQWpBoG3Nqs?si=WZo7WgJQFdEOi_kY"},
+    {title:"نهايات - طرق حل الاشكال في مسائل النهايات ( 9 )", link:"https://youtu.be/1RonaynMs1Q?si=0rxMLyqaCGsRae7o"},
+    {title:"نهايات - مسائل وزارية متنوعة ( 10 )", link:"https://youtu.be/QakJzS8oWXg?si=DWDNuJupNiInpk-a"},
+    {title:"مسائل النهايات في النماذج الوزارية للعام 2022م", link:"https://youtu.be/RxtQZcSXwA4?si=xHtV0XR8JIKL0biB"},
+    {title:"الاتصال - دراسة اتصال دالة عند نقطة ( 1 )", link:"https://youtu.be/I5H836xckIY?si=DgvmEd0djk512E4M"},
+    {title:"الاتصال - ايجاد الثوابت للدوال المتصلة عند نقطة ( 2 )", link:"https://youtu.be/KBWWqF78BwQ?si=9r68mmpSXHyhJnBg"},
+
+
+    {title:"الاتصال - إيجاد الثوابت للدوال المتصلة عند نقطة ( 3 )", link:"https://youtu.be/A1eW3R9nSlk?si=cHZUTT8sSHwAvjYt"},
+    {title:"الاتصال - ايجاد الثوابت للدوال المتصلة عند نقطة ( 4 )", link:"https://youtu.be/lC0e5Xfo7_g?si=2Y3g_ohEbXjvHXP5"},
+    {title:"حل الأسئلة الوزارية في نماذج 2022م الخاصة بالإتصال", link:"https://youtu.be/XYVGuVy9PO8?si=d5ImwM6tZ2chFeF2"},
+    {title:"مسائل النهايات والإتصال في نماذج اختبار 2020م", link:"https://youtu.be/1AkDdzO6G2s?si=IxVAPO0TwYpce7Yo"},
+    {title:"نهايات 2019م", link:"https://youtu.be/Se4MjKK-jfo?si=LyCZbusAtU6toCmf"},
+    {title:"الاتصال وزاري 2018 2019", link:"https://youtu.be/cM0OWfRE04Y?si=Bs_SLtdaYBWA24fF"},
+    {title:"قوانين مهمه للنسب المثلثية", link:"https://youtu.be/FRH9MBPSzW8?si=fBAupWBBLg5n7mwO"},
+ {title: "قوانين مهمه لفهم التفاضل", link: "https://youtu.be/50f4BtY67Hw?si=TAJc_BY5e56YEXkZ"},
+    {title: "تفاضل النهايات 1", link: "https://youtu.be/WfiH_vF89sg?si=ByN4JddpnVbG_1XB"},
+    {title: "قوانين النسب المثلثية 3", link: "https://youtu.be/stpc5tL85fs?si=-R4dARzvy-rpUfDH"},
+    {title: "النهايات 2", link: "https://youtu.be/g16qzpjkyC8?si=mYIqgmONxWYyjHku"},
+    {title: "النهايات 3", link: "https://youtu.be/AQjzlfiQlzo?si=M8Q7DD9SNM8lULjL"},
+    {title: "مسائل وزارية في النهايات واجب 3", link: "https://youtu.be/EUWAznvgsAQ?si=8EFRT6YrrLPATbxD"}, 
+      {title: "الاتصال 1", link: "https://youtu.be/XFjY45pq_ck?si=YojbjCaDBFSsApqk"},
+    {title: " اسئله تقيس فهم الطالب", link:"https://youtu.be/p9yFJF0oo8k?si=FGRJ9G6PMmSDPqet"},
+    {title: "الاتصال 2", link: "https://youtu.be/eqEj52DrbPw?si=83bGofrRiivJ4xoX"},
+    {title: "الاتصال 3", link: "https://youtu.be/QDsavk8iYOg?si=NWJvpgAgWIZdu0Cl"},
+    {title: "قواعد الاشتقاق 1", link: "https://youtu.be/ScP2kdiuHDI?si=Edkeg_nWfnegcz7y"},
+    {title: "قواعد الاشتقاق 2", link: "https://youtu.be/w3fOqZtk60U?si=V5Zv80bPcOd8wy0E"},
+    {title: "قواعد الاشتقاق 3 أ محمد الدوكري", link: "https://youtu.be/Mn2VTHbysrs?si=xisVWwOAXRU9k0me"},
+{title: "مشتقة الدالة الأسية أ محمد الدوكري", link: "https://youtu.be/cbjNs8dFxAw?si=XqaH1sBzUvjJyiQK"},
+    {title: "مسائل وزارية على الاشتقاق      ", link: "https://youtu.be/XsK77CgXwQQ?si=yBD4LRbR8PnOzyY7"},
+    {title: "حل تمارين وزارية على الاشتقاق أ/ محمد الدوكري", link: "https://youtu.be/FoRaAzJEd4s?si=KRYpxcIsM2OXvAnJ"},
+    {title: "مشتقة النسب المثلثية", link: "https://youtu.be/klJp38lqJEc?si=bdtbKDPjlozOZQUa"},
+    {title: "مشتقة الدالة الضمنية - تفاضل ثالث ثانوي ( 1 ) تحديث 2023", link: "https://youtu.be/FREBnA9Npaw?si=aKmrbVvOz6PUbeCG"},
+    {title: "مشتقة الدالة الضمنية ( 2 ) أسئلة وزارية 2023 م", link: "https://youtu.be/gYyB0cZALc4?si=RpT42a5oqijJYV06"},
+    {title: "طريقة حل الاختبارات الحديثة -      ", link: "https://youtu.be/_CeC6nX9kJo?si=gxDDHKPutOe2-o6d"},
+    {title: "المشتقة النونية", link: "https://youtu.be/PSIKe0MBP1Y?si=zmbdMYyvx-FBsXao"},
+    {title: "المشتقة النونية - 2", link: "https://youtu.be/ejAhdiZyls4?si=HxGrQHGXpdW3iMiF"},
+    {title: "أسئلة وزارية على المشتقة النونية 2019م", link: "https://youtu.be/D7cLywEfvvY?si=cQseV1JWE9rLcuCu"},
+    {title: "أسئلة وزارية على المشتقة النونية ( المشتقة ذات الرتب العليا ) - 1", link: "https://youtu.be/FulUH3piKlU?si=LuoYurNS2A9J_Hlf"},
+    {title: "مسائل على المشتقة النونية بفكر مختلفة - 2", link: "https://youtu.be/a9UdSSiLM9M?si=iQaJFuVFHz5Jbn8X"},
+    {title: "مسائل على المشتقة النونية ( الدوال المثلثية ) - 3", link: "https://youtu.be/n29pQHwyBK0?si=dFW1ywiMehH8F1R4"},
+    {title: "أسئلة وزارية 2022م على مشتقة تركيب دالتين", link: "https://youtu.be/jBd8zWWn9bg?si=HSf-1dY3ebbbofT3"},
+    {title: "تمارين وزارية على قاعدة التسلسل ومشتقة تركيب دالتين - 1", link: "https://youtu.be/9cXeTvb5qhs?si=0V_nCzcMtzMkbh7-"},
+    {title: "مسائل وزارية على قاعدة التسلسل ومشتقة تركيب دالتين - 2", link: "https://youtu.be/V5ZNYlZ6MfM?si=5BC0CP7njHRaLhvz"},
+    {title: "مسائل وزارية 2022م على قواعد الاشتقاق ( 1 )", link: "https://youtu.be/-2BOYci3pjc?si=iK76aaAzUoCMV_dL"},
+    {title: "تفاضل - معادلة المماس والناظم ( 1 )", link: "https://youtu.be/YPssYpJkI10?si=lm9HgGKwIfp5weE_"},
+    {title: "تفاضل - معادلتي المماس والناظم ( 2 )", link: "https://youtu.be/RMu3XNgUEqc?si=rPLNqdlQ4610n3WU"},
+    {title: "مسائل وزارية 2021م معادلة المماس والناظم ( 1 )", link: "https://youtu.be/7rW8yMoLoRo?si=caDqkz4HPzGJiUC3"},
+      {title: "مبرهنة رول مع تطبيقات وزارية ( 1 )", link: "https://youtu.be/VlUDN4kd96I?si=lIGM_-re-9K9icPG"},
+    {title: "تطبيقات وزارية على مبرهنة رول ( 2 )", link: "https://youtu.be/Cmx71LyeygU?si=ETi7zofg9MnCyutU"},
+    {title: "تطبيقات وزارية على مبرهنة رول ( 3 )", link: "https://youtu.be/5eioDyRZTK8?si=ogi6MZeEgwyPVaLP"},
+    {title: "مبرهنة القيمة المتوسطة في التفاضل", link: "https://youtu.be/mebi0fCObFA?si=J-84hiLPqmS2NQfb"},
+    {title: "تطبيقات على مبرهنة القيمة المتوسطة في التفاضل ( 1 )", link: "https://youtu.be/AwUQIHIUnOk?si=P3tTBCIlE_2Vq6L7"},
+    {title: "تطبيقات وزارية على مبرهنة القيمة المتوسطة في التفاضل", link: "https://youtu.be/NGOfiEbWSys?si=IFF8GCMzVk_OJ9kD"},
+    {title: "مبرهنة رول والقيمة المتوسطة - أسئلة وزارية 2020م ( 1 )", link: "https://youtu.be/lpn9K3r3F0w?si=tEwM_ajgVZLNGqRN"},
+    {title: "القيم القصوى - دراسة تغيرات الدالة", link: "https://youtu.be/CUKg1ak574Y?si=XWlf7APLwUIGqbbZ"},
+    {title: "حل الاسئلة الوزارية 2023م على النقاط الحرجة", link: "https://youtu.be/rZyZsIaZ2EQ?si=69CsDxfgk2WgHh8Q"},
+    {title: "حل الأسئلة الوزارية في نماذج 2022م على النقاط الحرجة و القيم القصوى", link: "https://youtu.be/uqSstMHCbEk?si=8ytt7-zN9zrUkCsi"},
+    {title: "نقاط الانعطاف وشكل التقعر - دراسة تغيرات الدالة", link: "https://youtu.be/2nAI4iIRkZk?si=7bi2J4_aU7wFB8jg"},
+    {title: "المستقيمات المقاربة - دراسة تغيرات الدالة", link: ""},
+    {title: "المستقيم المقارب المائل - دراسة تغيرات الدالة", link: "https://youtu.be/DcO8yTEmpHc?si=JZMpU1yAfavm6SnD"},
+    {title: "تكملة المستقيمات المقاربة - دراسة تغيرات الدالة", link: "https://youtu.be/vbb2qP3pwOI?si=Fs8EBRzjrHlhR0SL"},
+    {title: "القيم القصوى - دراسة تغيرات الدالة", link: "https://youtu.be/Zxtqf27cQ_A?si=9FolakxAr37zYB82"},
+    {title: "حل الاسئلة الوزارية 2023م على النقاط الحرجة", link: "https://youtu.be/d6gdl8tNNwQ?si=lD8OSyfpSzU6Bok8"},
+    {title: "حل الأسئلة الوزارية في نماذج 2022م على النقاط الحرجة و القيم القصوى", link: "https://youtu.be/uqSstMHCbEk?si=jhpLigvkBoJ7AcC_"},
+    {title: "نقاط الانعطاف وشكل التقعر - دراسة تغيرات الدالة", link: "https://youtu.be/2nAI4iIRkZk?si=A0rSZtArcxjS9pTO"},
+    {title: "المستقيمات المقاربة - دراسة تغيرات الدالة", link: "https://youtu.be/DcO8yTEmpHc?si=hJFDPqcth4p3mpNC"},
+    {title: "المستقيم المقارب المائل - دراسة تغيرات الدالة", link: "https://youtu.be/vbb2qP3pwOI?si=8vE9fnNUlxmpD8F3"},
+    {title: "تكملة المستقيمات المقاربة - دراسة تغيرات الدالة", link: "https://youtu.be/Zxtqf27cQ_A?si=LKNArnUNHNg3BEAF"},
+      {title: "التكامل الدرس - 1 -", link: "https://youtu.be/SMaq_DveGY0?si=Qxk7fMJ6DQKp_buK"},
+    {title: "تكامل الدرس - 2 - تعريف التكامل المحدد", link: "https://youtu.be/049WVsOu4mY?si=Yuo_22lGOUsNoEJ_"},
+    {title: "تكامل الدرس - 3 - تمارين وزارية على التعريف", link: "https://youtu.be/ANtP-z251Y8?si=CEiFvWX0pHjy_7qJ"},
+    {title: "حل الاسئلة الوزارية 2023 م التكامل باستخدام التعريف", link: "https://youtu.be/ANtP-z251Y8?si=gUvCeVQlLo-DyS5i"},
+    {title: "أسئلة وزارية 2022م على التكامل باستخدام التعريف", link: "https://youtu.be/DMKDddkbOjg?si=MFdHePaBEpAeHSwB"},
+    {title: "التكامل المحدد - مسائل وزارية باستخدام تعريف التكامل المحدد ( 1 )", link: "https://youtu.be/jnyMg2pbKdQ?si=IJoEQIaIhWZmocwD"},
+    {title: "التكامل المحدد / أسئلة وزارية تحل باستخدام تعريف التكامل المحدد ( 2 )", link: "https://youtu.be/bIoF-V6Mc88?si=7HgmYsHN6q7kZwtF"},
+    {title: "تكامل الدرس - 4 - تعاريف وتطبيقات عليها", link: "https://youtu.be/5i74RnTJjEY?si=ssHVX-mKovY3-Ld-"},
+    {title: "تكامل الدرس - 5 - متى تكون الدالة قابلة للتكامل على فترة م...", link: "https://youtu.be/7ZZilJJ_P8c?si=47IrQhJs0rmsVPcP"},
+    {title: "مسائل وزارية على تعاريف التكامل المحدد", link: "https://youtu.be/P74NVqWOfT4?si=WjxGhDl33yRb0GJl"},
+    {title: "تكامل الدرس - 6 - مبرهنة المقارنة", link: "https://youtu.be/u84lF9UnFTs?si=E71a_apWhq5_TU3C"},
+    {title: "حل الأسئلة الوزارية 2023م على مبرهنات التكامل المحدد", link: "https://youtu.be/n-gQ6peSVg4?si=352kCrXY6zSCnUGu"},
+    {title: "أسئلة وزارية 2022م على التكامل المحدد (التعاريف والمبرهنات)", link: "https://youtu.be/-bzEGwmHkkA?si=0sR4dVDXi0Rnq1ws"},
+    {title: "تكامل الدرس - 7 - إيجاد الحدين الأدنى والأعلى للتكامل ا...", link: "https://youtu.be/x_c8Q5t2Gzk?si=rxfFIj6BqTy4HjbF"},
+     {title: "تكامل الدرس - 8 - تطبيقات وزارية على مبرهنة الحدين الأعلى والأدنى", link: "https://youtu.be/NHWWJr-Gjkk?si=0Ba04Oa4sUisK5tt"},
+    {title: "مسائل وزارية 2021م مبرهنة الحدين الأدنى والأعلى ( 1 )", link: "https://youtu.be/qSL0ViGtyVQ?si=nHq5rICC9goF0QV3"},
+    {title: "مسائل وزارية - مبرهنة الحدين الأدنى والأعلى ( 2 )", link: "https://youtu.be/QxiBkVajHuE?si=kth3Ikek7vORX-da"},
+    {title: "حل الأسئلة الوزارية 2023م تكامل ( مبرهنة الحدين الأعلى والأدنى )", link: "https://youtu.be/P17EmxPS1BE?si=SszVKqH36ydJO8x0"},
+    {title: "التكامل غير المحدد قواعد - 1 -    ", link: "https://youtu.be/th-cGgXvo4Y?si=l0tPmici7b_OkceC"},
+    {title: "التكامل غير المحدد قواعد - 2 -    ", link: "https://youtu.be/gFLPguMJQ80?si=qwR7Tj7jlIJaQ3qf"},
+    {title: "تكامل النسب المثلثية - 1 - أ/ محمد الدوكري", link: "https://youtu.be/NR4cvNz2jz4?si=OYCNQ9TH7wx7rosG"},
+      {title: "تكامل الدالة الأسية    ", link: "https://youtu.be/5i2mzSoZsig?si=x28jMCWuw-DcC-OK"},
+    {title: "العلاقة بين التكامل المحدد وغير المحدد  ", link: "https://youtu.be/8RLF0CW0TUM?si=0o4IZiC4kW4BV_O0"},
+    {title: "تطبيقات وزارية على قواعد التكامل", link: "https://youtu.be/eJc64d5ujL0?si=C7Aupwo8KqPM2nSM"},
+    {title: "قواعد التكامل الغير محدد / تطبيقات وزارية ( 1 )", link: "https://youtu.be/IMEKEpuWdlQ?si=H5hrJ1Z8SN9aV4oL"},
+    {title: "أسئلة وزارية 2022م على التكامل المحدد", link: "https://youtu.be/XrO4pYgY7po?si=2WVkov_5-qI_NRGh"},
+    {title: "قواعد التكامل الأساسية / تطبيقات وزارية ( 2 )", link: "https://youtu.be/0tyUysuBvUk?si=YLUZ4sQgTGdh9on9"},
+    {title: "تمارين وزارية على التكامل 2018م", link: "https://youtu.be/oelm7E1eAlE?si=A-9kz-Pwr8xXT7eT"},
+{title: "حل الأسئلة الوزارية 2023م - تكامل - ( الدالة الأصلية ، التكامل بالتعويض )", link: "https://youtu.be/R_2DPxfMjmw?si=HLbpGr2h2P3wrfzK"},
+    {title: "حل الأسئلة الوزارية 2023م - التكامل غير المحدد ( 2 ) بالتوصيل/التعويض", link: "https://youtu.be/8NTZMHl0yAU?si=JARF2lsz-KMpdGsU"},
+    {title: "حل الأسئلة الوزارية 2023م - التكامل غير المحدد ( 3 ) بالتوصيل/التعويض", link: "https://youtu.be/m_McxUTAyDE?si=HMJUMgFSYVJ_ke-1"},
+    {title: "أسئلة وزارية 2022م على التكامل غير المحدد ( 2 ) بالتوصيل/التعويض", link: "https://youtu.be/5j7dfsREJbk?si=4wfBxN1JVuuJOnCe"},
+   {title: "مبرهنة القيمة المتوسطة في حساب التكامل  ", link: "https://youtu.be/ok7yqU0kXhM?si=YPKbvMQC1aWkOvvB"},
+    {title: "حل نماذج وزارية 2022م على مبرهنة القيمة المتوسطة في حساب التكامل", link: "https://youtu.be/_KUM2n-lAXg?si=cBr5vnQnyT4dew6W"},
+    {title: "حل الأسئلة الوزارية 2020 / 2021 م الخاصة بمبرهنة القيمة المتوسطة", link: "https://youtu.be/zIyJIh-z1xk?si=eCuF21XsWFpaBRMx"},
+    {title: "التكامل بالتعويض  ", link: "https://youtu.be/eVNmZaPJRUA?si=GcKZpK3-48ZzfL2s"},
+    {title: "تكاملات وزارية على التكامل بالتعويض", link: "https://youtu.be/otiXMpp-tuY?si=rhJoM30FJQ9HVWqM"},
+    {title: "تكاملات وزارية ( التكامل بالتعويض )", link: "https://youtu.be/jFoHCDyMeVk?si=H6HkQSN3Ato4_AUz"},
+    {title: "التكامل بالتجزئة ", link: "https://youtu.be/IViqfRVxLEo?si=cBn49m-dIkzwONoX"},
+     {title: "تمارين وزارية على التكامل بالتجزئة", link: "https://youtu.be/Pxh1p2dZxAg?si=ggVZ1M8eFCQxBZEP"},
+    {title: "تطبيق على التكامل بالتعويض والتجزئة", link: "https://youtu.be/ZzKpRP-QxEY?si=WVf1Q1CmmWX36pjr"},
+    {title: "حل الأسئلة الوزارية 2022م على التكامل بالتجزئة", link: "https://youtu.be/FgncR0iflR0?si=9Gu1iwE1BhNuCiSF"},
+    {title: "حل التكاملات الواردة في النماذج الوزارية 2020 م", link: "https://youtu.be/z5TMbExx8k4?si=QnRHQrtWMqNeCky3"},
+    {title: "تكامل الدوال الكسرية ( الكسور الجزئية )", link: "https://youtu.be/3A-foPY5sJo?si=oLBAmiWjrjwOZc9m"},
+    {title: "تمارين على تكامل الدوال الكسرية", link: "https://youtu.be/5OV34xsR8YE?si=D2ZwMAs_Cuaakvr1"},
+    {title: "مكاملة الدالة الكسرية درجة البسط اكبر او يساوي درجة المقام", link: "https://youtu.be/1dWp__j0QR4?si=QiLIUAP2xbfzcS6Z"},
+    {title: "تطبيقات التكامل / الحجوم الدورانية ( 1 )", link: "https://youtu.be/ihjkrUYZAHA?si=x3EbZVORf-PC5Ghs"},
+    {title: "تطبيقات التكامل / الحجوم الدورانية ( 2 )", link: "https://youtu.be/OrK5VetrSxE?si=hCfXdCI_R3PUlZl5"},
+    {title: "تطبيقات التكامل / الحجوم الدورانية ( 3 )", link: "https://youtu.be/fzTNzGjVBUQ?si=cbWai_-L15IFlhQT"},
+    {title: "حل أسئلة وزارية 2023م على التكامل المحدد  1 )", link: "https://youtu.be/KyshkrBEXxM?si=Orr1ZecDJ-AZUaVH"},
+    {title: "حل أسئلة وزارية 2023م على التكامل المحدد  2 )", link: "https://youtu.be/cM6gXwiHHFQ?si=FnvzmP1xHkmxShKr"},
+    {title: "مراجعة ليلة الاختبار وكذلك للمتقدمين لاختبارات القبول - ملخص التكامل", link: "https://youtu.be/sTRCDG7D6HU?si=gRjf-DbNY8MH5wYP"}
+
+
+
+];
+
+
+function displayLessons(data) {
+    const list = document.getElementById("lessonsList");
+    list.innerHTML = data.map(lesson => `
+        <div class="lesson-card">
+            <div class="lesson-title">${lesson.title}</div>
+            <a href="${lesson.link}" class="btn-watch" target="_blank">
+                 مشاهدة الدرس <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+    `).join('');
+}
+
+function filterLessons() {
+    const term = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = lessons.filter(l => l.title.toLowerCase().includes(term));
+    displayLessons(filtered);
+}
+
+// البدء عند تحميل الصفحة
+displayLessons(lessons);
+</script>
+<script src="layout.js" defer></script>
+</body>
+</html>

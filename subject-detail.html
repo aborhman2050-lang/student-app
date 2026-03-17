@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل الطالب الذكي | تفاصيل المادة</title>
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 50%,#f8fafc 100%);
+color:#2b2d42;
+direction:rtl;
+line-height:1.6;
+}
+/* ============================= */
+/* ===== شريط العنوان الجديد ===== */
+/* ============================= */
+
+.top-bar{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 80px;
+    background: linear-gradient(135deg,#16a34a,#22c55e);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+/* عنوان الوسط */
+.top-bar::after{
+    content: "دليل التميز";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+/* إلغاء خلفية navbar القديمة */
+.navbar{
+    display:none;
+}
+
+/* ضبط الجسم تحت الشريط */
+body{
+    padding-top: 100px;
+}
+
+
+.navbar{
+background:white;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+padding:1rem 0;
+position:sticky;
+top:0;
+z-index:100;
+border-bottom:3px solid #22c55e;
+}
+
+.navbar-container{
+max-width:1200px;
+margin:0 auto;
+padding:0 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.btn-back,
+.btn-logout{
+background:transparent;
+color:#166534;
+border:none;
+padding:8px 16px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:8px;
+font-weight:600;
+transition:0.3s;
+}
+
+.btn-back:hover,
+.btn-logout:hover{
+background:#f8f9fa;
+border-radius:8px;
+}
+
+.navbar-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:1.25rem;
+font-weight:600;
+color:#166534;
+}
+
+.navbar-title i{color:#22c55e;}
+
+.subject-detail-container{
+max-width:1200px;
+margin:0 auto;
+padding:40px 20px;
+}
+
+.subject-info{text-align:center;margin-bottom:50px;}
+
+.info-card{
+background:linear-gradient(135deg,#16a34a,#22c55e);
+border-radius:20px;
+padding:40px;
+color:white;
+box-shadow:0 15px 40px rgba(34,197,94,0.25);
+}
+
+.info-icon{
+width:100px;
+height:100px;
+background:rgba(255,255,255,0.2);
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto 20px;
+font-size:3rem;
+}
+
+.options-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-bottom:50px;
+}
+
+.option-card{
+background:white;
+border-radius:15px;
+padding:25px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+box-shadow:0 8px 25px rgba(0,0,0,0.06);
+border:2px solid transparent;
+}
+
+.option-card:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 35px rgba(34,197,94,0.25);
+border-color:#27ae60;
+}
+
+.option-card i{
+font-size:2.5rem;
+color:#27ae60;
+margin-bottom:15px;
+display:block;
+}
+
+.option-card.highlight{
+background:linear-gradient(135deg,#16a34a,#22c55e);
+color:white;
+}
+
+.option-card.highlight i,
+.option-card.highlight h3,
+.option-card.highlight p{
+color:white;
+}
+
+.footer{
+background:linear-gradient(135deg,#14532d,#166534);
+color:#d1fae5;
+text-align:center;
+padding:2rem;
+margin-top:4rem;
+}
+/* ============================= */
+/* ===== الشريط العلوي ===== */
+/* ============================= */
+
+.top-bar {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    left: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* أزرار العودة والقائمة */
+.back-btn,
+.menu-btn {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 14px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(34, 197, 94, 0.35);
+    transition: all 0.35s ease;
+    position: relative;
+    z-index: 900; /* أقل من القائمة */
+}
+
+/* تأثير عند المرور */
+.menu-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.45);
+}
+
+/* تأثير عند الضغط */
+.menu-btn:active {
+    transform: scale(0.95);
+}
+
+/* عند فتح القائمة يخفت الزر */
+.side-menu.active ~ .top-bar .menu-btn {
+    opacity: 0;
+    pointer-events: none;
+}
+.back-btn:hover,
+.menu-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+}
+
+/* ============================= */
+/* ===== الخلفية المعتمة ===== */
+/* ============================= */
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s ease;
+    z-index: 998;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ============================= */
+/* ===== القائمة الجانبية ===== */
+/* ============================= */
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100vh;
+
+    background: linear-gradient(180deg, #ffffff, #ecfdf5);
+    backdrop-filter: blur(12px);
+
+    box-shadow: -15px 0 40px rgba(0, 0, 0, 0.25);
+
+    padding: 30px 22px;
+
+    transition: all 0.4s cubic-bezier(.77, 0, .18, 1);
+
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+
+    overflow-y: auto;
+}
+
+/* عند الفتح */
+.side-menu.active {
+    right: 0;
+}
+
+/* حركة دخول ناعمة */
+.side-menu.active {
+    animation: slideInMenu 0.4s ease forwards;
+}
+
+@keyframes slideInMenu {
+    from {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Scroll جميل */
+.side-menu::-webkit-scrollbar {
+    width: 5px;
+}
+
+.side-menu::-webkit-scrollbar-thumb {
+    background: #22c55e;
+    border-radius: 10px;
+}
+.side-menu.active {
+    right: 0;
+}
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 998;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+/* رأس القائمة */
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #166534;
+}
+
+/* الروابط */
+.side-menu a {
+    text-decoration: none;
+    color: #1f2937;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    transition: all 0.25s ease;
+    display: block;
+    font-weight: 600;
+}
+
+.side-menu a:hover {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white;
+    transform: translateX(-6px);
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3);
+}
+
+/* ============================= */
+/* ===== القائمة المنسدلة ===== */
+/* ============================= */
+
+.dropdown-btn {
+    padding: 12px 14px;
+    cursor: pointer;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s ease;
+}
+
+.dropdown-btn:hover {
+    background: #e6f9ef;
+}
+
+/* سهم */
+.dropdown-btn i {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-btn.active i {
+    transform: rotate(180deg);
+}
+
+/* المحتوى المنسدل */
+.dropdown-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    padding-right: 10px;
+}
+
+.dropdown-content a {
+    font-size: 14px;
+    margin-bottom: 6px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 0.25s;
+}
+
+.dropdown-content a:hover {
+    background: #16a34a;
+    color: white;
+    transform: translateX(-4px);
+}
+
+/* عند الفتح */
+.dropdown-content.show {
+    max-height: 400px;
+}
+
+/* ============================= */
+/* ===== زر تسجيل الخروج ===== */
+/* ============================= */
+
+.logout-btn {
+    margin-top: auto;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+    transition: 0.3s ease;
+}
+
+.logout-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(239, 68, 68, 0.6);
+}}
+</style>
+</head>
+
+<body>
+    
+    
+<!-- الشريط العلوي -->
+
+
+<nav class="navbar">
+<div class="navbar-container">
+
+ 
+</button>
+
+<div class="navbar-title">
+<i id="subjectIcon" class="fas fa-quran"></i>
+<span id="subjectTitle">المادة</span>
+</div>
+
+<button class="btn-logout" onclick="logout()">
+
+</button>
+</div>
+</nav>
+
+<div class="subject-detail-container">
+
+<section class="subject-info">
+<div class="info-card">
+<div class="info-icon">
+<i id="subjectIconLarge" class="fas fa-quran"></i>
+</div>
+<h1 id="subjectTitleLarge">اسم المادة</h1>
+<p id="subjectDesc">وصف المادة</p>
+</div>
+</section>
+
+<section>
+<div class="options-grid">
+
+<div class="option-card" onclick="goToMaterial()">
+<i class="fas fa-book-open"></i>
+<h3>تصفح المادة</h3>
+<p>فتح ملف المادة PDF</p>
+</div>
+
+<div class="option-card" id="youtubeOption" onclick="goToLessons()" style="display:none;">
+<i class="fab fa-youtube" style="color:#ff0000;"></i>
+<h3>شروحات الفيديو</h3>
+<p>مشاهدة دروس الرياضيات على يوتيوب</p>
+</div>
+
+<div class="option-card" id="translateOption" onclick="goToTranslate()" style="display:none;">
+<i class="fas fa-language"></i>
+<h3>الترجمة</h3>
+<p>ترجمة النصوص الإنجليزية</p>
+</div>
+
+<div class="option-card" onclick="goToModels()">
+<i class="fas fa-copy"></i>
+<h3>النماذج التدريبية</h3>
+<p>عرض النماذج المرقمة</p>
+</div>
+
+<div class="option-card" onclick="goToTests()">
+<i class="fas fa-file-alt"></i>
+<h3>الاختبارات</h3>
+<p>فتح الاختبارات</p>
+</div>
+
+<div class="option-card highlight" onclick="startQuiz()">
+<i class="fas fa-star"></i>
+<h3>بدء الاختبار</h3>
+<p>اختبار تفاعلي</p>
+</div>
+
+</div>
+</section>
+
+</div>
+
+<footer class="footer">
+<p>&copy; 2026 دليل التميز. جميع الحقوق محفوظة.</p>
+</footer>
+
+<script>
+
+const isTrial = localStorage.getItem("isTrialMode") === "true";
+const currentSubject = localStorage.getItem('currentSubject') || 'quran';
+
+if(isTrial && currentSubject !== "quran"){
+    alert("هذه المادة غير متاحة في النسخة التجريبية");
+    window.location.href = "subjects.html";
+}
+
+const subjectsData = {
+quran:{title:'القرآن الكريم',icon:'fa-quran',description:'تلاوة وتفسير وأحكام التجويد'},
+math:{title:'الرياضيات',icon:'fa-calculator',description:'التفاضل والتكامل والجبر'},
+islamic:{title:'التربية الإسلامية',icon:'fa-mosque',description:'العقيدة والفقه والسيرة'},
+arabic:{title:'اللغة العربية',icon:'fa-pen-nib',description:'النحو والبلاغة والأدب'},
+english:{title:'اللغة الإنجليزية',icon:'fa-language',description:'Grammar and Vocabulary'},
+chemistry:{title:'الكيمياء',icon:'fa-vial',description:'الكيمياء العضوية والتحليلية'},
+biology:{title:'الأحياء',icon:'fa-dna',description:'الوراثة والخلية'},
+physics:{title:'الفيزياء',icon:'fa-bolt',description:'الكهرباء والضوء'}
+};
+
+const sub = subjectsData[currentSubject] || subjectsData["quran"]; // ✅ إصلاح هنا
+
+function initializeSubject(){
+
+if(!sub) return; // ✅ حماية إضافية
+
+document.getElementById('subjectTitle').textContent=sub.title;
+document.getElementById('subjectTitleLarge').textContent=sub.title;
+document.getElementById('subjectDesc').textContent=sub.description;
+document.getElementById('subjectIcon').className=`fas ${sub.icon}`;
+document.getElementById('subjectIconLarge').className=`fas ${sub.icon}`;
+
+if(currentSubject==='math' || currentSubject==='physics'){
+document.getElementById('youtubeOption').style.display='block';
+}
+
+if(currentSubject==='english'){
+document.getElementById('translateOption').style.display='block';
+}
+}
+setTimeout(() => {
+    ا
+}, 800);
+function goToMaterial() {
+  
+  if (currentSubject === "islamic") {
+    window.location.href = "islamic-sections.html";
+    return;
+  }
+  
+  if (currentSubject === "arabic") {
+    window.location.href = "arabic-sections.html";
+    return;
+  }
+  
+  window.location.href = `pdfs/${currentSubject}/main.pdf`;
+}
+
+/* ✅ هذه كانت ناقصة سابقاً */
+function goToModels(){
+    window.location.href = "models-list.html";
+}
+
+function goToTests(){window.location.href='tests-list.html';}
+function startQuiz(){window.location.href='interactive-tests.html';}
+function goBack(){window.location.href='subjects.html';}
+
+function logout(){
+localStorage.removeItem('userKey');
+localStorage.removeItem('isTrialMode');
+window.location.href='index.html';
+}
+
+function goToLessons(){
+
+if(currentSubject === "math"){
+    window.location.href = "math-lessons.html";
+    return;
+}
+
+if(currentSubject === "physics"){
+    window.location.href = "physics-lessons.html";
+    return;
+}
+
+}
+function goToTranslate(){window.location.href='english-translate.html';}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initializeSubject();
+});
+
+</script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+/* Firebase */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCzQ3CAwzIS41TuWsbhomTdsdDzJGH3bmU",
+  authDomain: "studentapp-97888.firebaseapp.com",
+  projectId: "studentapp-97888",
+  storageBucket: "studentapp-97888.appspot.com",
+  messagingSenderId: "654721058804",
+  appId: "1:654721058804:web:db251bb134e8abd73fdba1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ================= حماية فورية ================= */
+
+async function liveSecurityCheck(){
+
+  const key = localStorage.getItem("userKey");
+  if(!key) return;
+
+  try{
+
+    const snap = await getDoc(doc(db,"activationKeys",key));
+    if(!snap.exists()) return;
+
+    const data = snap.data();
+
+    if(data.disabled === true){
+
+      localStorage.clear();
+
+      alert("تم إيقاف اشتراكك من الإدارة ❌");
+
+      window.location.href="login.html";
+    }
+
+  }catch(e){
+    console.log("Offline - skip live check");
+  }
+}
+
+/* فحص عند فتح الصفحة */
+liveSecurityCheck();
+
+/* فحص كل دقيقة */
+setInterval(liveSecurityCheck, 60 * 1000);
+
+</script>
+<script src="modal-system.js"></script>
+
+<script>
+function toggleMenu(){
+    document.getElementById("sideMenu").classList.toggle("active");
+}
+
+function logout(){
+    localStorage.clear();
+    window.location.href = "login.html";
+}
+</script>
+<script src="layout.js"></script>
+</body>
+</html>

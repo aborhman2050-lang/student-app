@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل التميز | التلخيص الذكي</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+  
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Segoe UI',Tahoma,sans-serif;
+background:#f5f7fa;
+direction:rtl;
+line-height:1.6;
+}
+
+.navbar{
+background:white;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+padding:1rem 0;
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.navbar-container{
+max-width:1200px;
+margin:0 auto;
+padding:0 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.navbar-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:1.5rem;
+font-weight:700;
+color:#27ae60;
+}
+
+.btn-back{
+background:transparent;
+color:#27ae60;
+border:none;
+padding:8px 16px;
+cursor:pointer;
+font-weight:600;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.btn-back:hover{
+background:#f8f9fa;
+border-radius:8px;
+}
+
+.container{
+max-width:1000px;
+margin:40px auto;
+padding:20px;
+}
+/* ============================= */
+/* ===== شريط العنوان الجديد ===== */
+/* ============================= */
+
+.top-bar{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 80px;
+    background: linear-gradient(135deg,#16a34a,#22c55e);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+/* عنوان الوسط */
+.top-bar::after{
+    content: "دليل التميز";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+/* إلغاء خلفية navbar القديمة */
+.navbar{
+    display:none;
+}
+
+/* ضبط الجسم تحت الشريط */
+body{
+    padding-top: 100px;
+}
+
+.intro-box{
+background:linear-gradient(135deg,#27ae60,#2ecc71);
+color:white;
+padding:30px;
+border-radius:20px;
+text-align:center;
+margin-bottom:40px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+.intro-box i{
+font-size:3rem;
+margin-bottom:15px;
+display:block;
+}
+
+.cards-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.summary-card{
+background:white;
+border-radius:15px;
+padding:30px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+border:2px solid transparent;
+}
+
+.summary-card:hover{
+transform:translateY(-10px);
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+border-color:#27ae60;
+}
+
+.summary-card i{
+font-size:3rem;
+color:#27ae60;
+margin-bottom:15px;
+display:block;
+}
+
+.summary-card h3{
+color:#2b2d42;
+margin-bottom:10px;
+}
+
+.summary-card p{
+color:#8d99ae;
+font-size:0.9rem;
+}
+
+.footer{
+background:#14532D;
+color:white;
+text-align:center;
+padding:2rem;
+margin-top:4rem;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="navbar-container">
+<button class="btn-back" onclick="goBack()">
+<i class="fas fa-arrow-right"></i> العودة
+</button>
+
+<div class="navbar-title">
+<i class="fas fa-lightbulb"></i>
+<span>التلخيص الذكي NotebookLM</span>
+</div>
+
+<div></div>
+</div>
+</nav>
+
+<div class="container">
+
+<div class="intro-box">
+<i class="fas fa-brain"></i>
+<h2>تلخيص المواد بالذكاء الاصطناعي</h2>
+<p>اختر المادة لفتح التلخيص التفاعلي عبر NotebookLM</p>
+</div>
+
+<div class="cards-grid">
+
+<div class="summary-card" onclick="goToSummary('quran')">
+<i class="fas fa-quran"></i>
+<h3>القرآن الكريم</h3>
+<p>تلخيص وتوضيح الآيات</p>
+</div>
+
+<div class="summary-card" onclick="goToSummary('math')">
+<i class="fas fa-calculator"></i>
+<h3>الرياضيات</h3>
+<p>ملخص القوانين والأفكار</p>
+</div>
+
+<div class="summary-card" onclick="goToSummary('islamic')">
+<i class="fas fa-mosque"></i>
+<h3>التربية الإسلامية</h3>
+<p>تلخيص الإيمان والفقه والحديث</p>
+</div>
+
+<div class="summary-card" onclick="goToSummary('arabic')">
+<i class="fas fa-pen-nib"></i>
+<h3>اللغة العربية</h3>
+<p>النحو والقراءة والأدب</p>
+</div>
+
+<div class="summary-card" onclick="goToSummary('english')">
+<i class="fas fa-language"></i>
+<h3>اللغة الإنجليزية</h3>
+<p>Grammar & Vocabulary</p>
+</div>
+
+<div class="summary-card" onclick="goToSummary('physics')">
+<i class="fas fa-bolt"></i>
+<h3>الفيزياء</h3>
+<p>تلخيص القوانين المهمة</p>
+</div>
+
+<div class="summary-card" onclick="goToSummary('chemistry')">
+<i class="fas fa-vial"></i>
+<h3>الكيمياء</h3>
+<p>ملخص التفاعلات والقوانين</p>
+</div>
+
+<div class="summary-card" onclick="goToSummary('biology')">
+<i class="fas fa-dna"></i>
+<h3>الأحياء</h3>
+<p>تلخيص المفاهيم الحيوية</p>
+</div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+<p>&copy; 2026 دليل التميز. جميع الحقوق محفوظة.</p>
+</footer>
+
+<script>
+
+function goBack(){
+    window.location.href="subjects.html";
+}
+
+function goToSummary(subject){
+    // حفظ اسم المادة في الذاكرة المحلية لاستدعائها في الصفحة التالية
+    localStorage.setItem("summarySubject", subject);
+    // الانتقال إلى صفحة التلخيص
+    window.location.href = "ai-summary.html";
+}
+
+</script>
+<script src="layout.js"></script>
+</body>
+</html>

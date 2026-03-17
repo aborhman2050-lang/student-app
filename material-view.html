@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل التميز| عرض النموذج</title>
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f7fa; direction: rtl; }
+        .navbar { background: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+        .navbar-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-back { background: transparent; color: #4361ee; border: none; padding: 8px 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .btn-back:hover { background: #f8f9fa; border-radius: 8px; }
+        .navbar-title { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 600; color: #4361ee; }
+        .pdf-viewer { width: 100%; height: calc(100vh - 80px); border: none; }
+    </style>
+</head>
+<body>
+    <nav class="navbar"><div class="navbar-container"><button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للقائمة</button><div class="navbar-title"><i class="fas fa-file-pdf"></i> <span id="modelTitle">عرض النموذج</span></div><div></div></div></nav>
+    <iframe id="pdfFrame" src="" class="pdf-viewer"></iframe>
+    <script>
+        const currentSubject = localStorage.getItem('currentSubject') || 'quran';
+        const selectedModel = localStorage.getItem('selectedModel') || '1';
+        const subjectsNames = { quran: 'القرآن الكريم', math: 'الرياضيات', islamic: 'التربية الإسلامية', arabic: 'اللغة العربية', english: 'اللغة الإنجليزية', chemistry: 'الكيمياء', biology: 'الأحياء', physics: 'الفيزياء' };
+        function init() {
+            document.getElementById('modelTitle').textContent = `نموذج رقم ${selectedModel} - مادة ${subjectsNames[currentSubject]}`;
+            document.getElementById('pdfFrame').src = `pdfs/${currentSubject}/model${selectedModel}.pdf`;
+        }
+        function goBack() { window.location.href = 'models-list.html'; }
+        init();
+    </script>
+<script src="assets/modal-system.js"></script>
+</body>
+</html>

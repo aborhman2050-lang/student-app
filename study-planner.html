@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منظم الدراسة</title>
+
+<style>
+
+:root{
+--primary1:#16a34a;     /* أخضر أساسي */
+--primary2:#22c55e;     /* أخضر فاتح */
+--success:#16a34a;
+--bg:#f0fdf4;           /* خلفية خضراء فاتحة */
+--card:#ffffff;
+--text:#14532d;
+}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:var(--bg);
+color:var(--text);
+}
+
+/* ===== Header ===== */
+.header{
+background:linear-gradient(135deg,var(--primary1),var(--primary2));
+color:white;
+padding:30px 20px 60px;
+border-bottom-left-radius:40px;
+border-bottom-right-radius:40px;
+text-align:center;
+box-shadow:0 15px 35px rgba(34,197,94,0.3);
+}
+
+.header h2{
+margin:0;
+font-size:22px;
+}
+
+.welcome{
+margin-top:8px;
+font-size:14px;
+opacity:0.95;
+}
+
+/* ===== Card ===== */
+.month-card{
+background:var(--card);
+margin:-40px 15px 20px;
+padding:20px;
+border-radius:25px;
+box-shadow:0 20px 40px rgba(34,197,94,0.15);
+}
+
+/* ===== Calendar ===== */
+.calendar{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:8px;
+}
+
+.day-name{
+text-align:center;
+font-size:12px;
+opacity:0.6;
+}
+
+.day{
+background:#dcfce7;
+padding:14px 0;
+border-radius:14px;
+text-align:center;
+cursor:pointer;
+font-weight:600;
+transition:0.2s;
+color:#166534;
+}
+
+.day:hover{
+transform:scale(1.07);
+background:#bbf7d0;
+}
+
+.day.today{
+border:2px solid var(--primary1);
+background:white;
+}
+
+.day.done{
+background:var(--success);
+color:white;
+}
+
+/* ===== Modal ===== */
+.modal{
+position:fixed;
+bottom:-100%;
+left:0;
+width:100%;
+height:90%;
+background:white;
+border-top-left-radius:30px;
+border-top-right-radius:30px;
+box-shadow:0 -10px 40px rgba(34,197,94,0.25);
+transition:0.4s;
+padding:20px;
+overflow:auto;
+}
+
+.modal.active{
+bottom:0;
+}
+
+.modal h3{
+text-align:center;
+color:#166534;
+}
+
+/* ===== Tasks ===== */
+.task{
+display:flex;
+align-items:center;
+gap:12px;
+background:#f0fdf4;
+padding:16px;
+border-radius:20px;
+margin-bottom:14px;
+box-shadow:0 10px 20px rgba(34,197,94,0.1);
+transition:0.2s;
+}
+
+.task input{
+width:20px;
+height:20px;
+accent-color:var(--primary1);
+}
+
+.task.completed{
+background:#dcfce7;
+}
+
+.task.completed span{
+text-decoration:line-through;
+color:var(--success);
+}
+
+.save-btn{
+width:100%;
+padding:16px;
+background:linear-gradient(135deg,var(--primary1),var(--primary2));
+color:white;
+border:none;
+border-radius:20px;
+font-size:16px;
+margin-top:20px;
+box-shadow:0 10px 25px rgba(34,197,94,0.3);
+}
+
+.reward{
+margin-top:15px;
+padding:14px;
+background:var(--success);
+color:white;
+border-radius:18px;
+text-align:center;
+font-size:14px;
+}
+.footer {
+  background: linear-gradient(135deg, #14532d, #166534);
+  color: #d1fae5;
+  text-align: center;
+  padding: 2rem;
+  margin-top: 4rem;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h2>📅 منظم الدراسة</h2>
+<div class="welcome">
+مرحباً بك 👋 ركّز اليوم وابدأ بعد المدرسة الساعة 2 ظهراً 💪
+</div>
+</div>
+
+<div class="month-card">
+
+<div class="calendar" id="calendar"></div>
+
+</div>
+
+<div class="modal" id="modal">
+<h3 id="modalTitle"></h3>
+<div id="tasksContainer"></div>
+<button class="save-btn" onclick="saveDay()">حفظ اليوم</button>
+<div id="rewardBox"></div>
+</div>
+
+<script>
+
+const tasksTemplate=[
+
+// ===== صباح مدرسة =====
+"06:00 الاستيقاظ",
+"06:30 صلاة الفجر",
+"07:00 - 13:30 دوام المدرسة",
+
+// ===== بعد الظهر =====
+"14:00 راحة قصيرة بعد المدرسة",
+"14:30 مذاكرة مادة 1",
+"15:30 مذاكرة مادة 2",
+"16:30 صلاة العصر",
+"17:00 مذاكرة مادة 3",
+"18:00 استراحة",
+"18:30 صلاة المغرب",
+"19:00 مراجعة عامة",
+"20:00 صلاة العشاء",
+"20:30 تحضير لليوم التالي",
+"22:30 نوم"
+
+];
+
+const calendar=document.getElementById("calendar");
+const modal=document.getElementById("modal");
+const tasksContainer=document.getElementById("tasksContainer");
+
+const today=new Date();
+const currentDay=today.getDate();
+
+const dayNames=["س","ن","ث","ر","خ","ج","س"];
+dayNames.forEach(name=>{
+const div=document.createElement("div");
+div.className="day-name";
+div.innerText=name;
+calendar.appendChild(div);
+});
+
+for(let i=1;i<=30;i++){
+const day=document.createElement("div");
+day.className="day";
+day.innerText=i;
+
+if(i===currentDay){
+day.classList.add("today");
+}
+
+if(localStorage.getItem("planner_day_"+i+"_complete")){
+day.classList.add("done");
+}
+
+day.onclick=()=>openDay(i);
+calendar.appendChild(day);
+}
+
+let selectedDay=null;
+
+function openDay(day){
+selectedDay=day;
+modal.classList.add("active");
+document.getElementById("modalTitle").innerText="تنظيم يوم "+day;
+tasksContainer.innerHTML="";
+document.getElementById("rewardBox").innerHTML="";
+
+let saved=JSON.parse(localStorage.getItem("planner_day_"+day))||[];
+
+tasksTemplate.forEach((task,index)=>{
+const div=document.createElement("div");
+div.className="task";
+
+const checked=saved[index]===true;
+
+div.innerHTML=`
+<input type="checkbox" ${checked?"checked":""}>
+<span>${task}</span>
+`;
+
+if(checked) div.classList.add("completed");
+
+div.querySelector("input").addEventListener("change",(e)=>{
+if(e.target.checked){
+div.classList.add("completed");
+}else{
+div.classList.remove("completed");
+}
+saveProgress();
+});
+
+tasksContainer.appendChild(div);
+});
+}
+
+function saveProgress(){
+const checks=document.querySelectorAll("#tasksContainer input");
+let data=[];
+checks.forEach(c=>data.push(c.checked));
+localStorage.setItem("planner_day_"+selectedDay,JSON.stringify(data));
+}
+
+function saveDay(){
+const checks=document.querySelectorAll("#tasksContainer input");
+let allDone=true;
+checks.forEach(c=>{if(!c.checked) allDone=false;});
+
+if(allDone){
+localStorage.setItem("planner_day_"+selectedDay+"_complete","true");
+document.getElementById("rewardBox").innerHTML=
+`<div class="reward">🔥 يوم مثالي! استمر يا بطل!</div>`;
+}
+
+setTimeout(()=>location.reload(),1200);
+}
+
+</script>
+<footer class="footer">
+<p>&copy; 2026 دليل التميز. جميع الحقوق محفوظة.</p>
+</footer>
+</body>
+</html>

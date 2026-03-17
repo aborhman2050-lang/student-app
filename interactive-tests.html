@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+
+<title>الاختبار التفاعلي - دليل التميز</title>
+
+<style>
+/* التنسيقات الاحترافية الخاصة بك */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+font-family:'Segoe UI', Tahoma, sans-serif;
+background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 50%,#f8fafc 100%);
+direction:rtl; color:#14532d; min-height: 100vh;
+}
+.navbar{ background:white; box-shadow:0 4px 15px rgba(0,0,0,0.1); padding:1rem 0; position:sticky; top:0; z-index:100; border-bottom:4px solid #22c55e; }
+.navbar-container{ max-width:1100px; margin:auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center; }
+.btn-back{ background:transparent; color:#166534; border:none; padding:8px 16px; cursor:pointer; font-weight:600; font-size: 16px; }
+.page-header{ text-align:center; margin:40px 0 20px 0; }
+.page-title{ display:inline-block; padding:14px 40px; border-radius:20px; font-size:26px; font-weight:700; background:white; border:3px solid #22c55e; box-shadow:0 10px 25px rgba(34,197,94,0.25); color:#166534; }
+.quiz-container{ max-width:850px; margin:auto; background:white; padding:30px; border-radius:25px; box-shadow:0 15px 40px rgba(0,0,0,0.08); margin-bottom: 50px; }
+.header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.timer{ background:linear-gradient(135deg,#dc2626,#ef4444); color:white; padding:8px 15px; border-radius:12px; font-weight:bold; box-shadow:0 5px 15px rgba(220,38,38,0.3); direction: ltr; }
+.progress-bar{ height:12px; background:#e5e7eb; border-radius:10px; overflow:hidden; margin-bottom:25px; }
+.progress{ height:100%; width:0%; background:linear-gradient(135deg,#16a34a,#22c55e); transition:0.3s; }
+.question-box{ background:#f9fafb; padding:20px; border-radius:15px; margin-bottom:20px; border:1px solid #e5e7eb; }
+.question-box p{ font-weight:600; margin-bottom:15px; font-size: 18px; }
+.options label{ display:block; padding:15px; margin-bottom:10px; background:white; border-radius:10px; cursor:pointer; transition:0.3s; border:1px solid #e5e7eb; }
+.options label:hover{ background:#ecfdf5; border-color:#22c55e; }
+.options input{ margin-left: 10px; transform: scale(1.2); }
+.navigation{ display:flex; justify-content:space-between; margin-top:20px; gap: 10px; }
+button.nav-btn{ padding:12px 25px; border:none; border-radius:10px; cursor:pointer; font-weight:bold; flex: 1; transition: 0.3s; }
+.prev-btn{ background:#6b7280; color:white; }
+.next-btn{ background:#16a34a; color:white; }
+.finish-btn{ background:#14532d; color:white; }
+.result{ margin-top:30px; padding:25px; border-radius:20px; background:#16a34a; color:white; text-align:center; }
+top-bar{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 80px;
+    background: linear-gradient(135deg,#16a34a,#22c55e);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+/* عنوان الوسط */
+.top-bar::after{
+    content: "أكاديمية التميز";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+/* إلغاء خلفية navbar القديمة */
+.navbar{
+    display:none;
+}
+
+/* ضبط الجسم تحت الشريط */
+body{
+    padding-top: 100px;
+}
+.footer{
+background:linear-gradient(135deg,#14532D,#166534);
+color:#d1fae5;
+text-align:center;
+padding:2rem;
+margin-top:4rem;
+}
+
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <button class="btn-back" onclick="location.href='index.html'"> </button>
+        <div class="navbar-title">الاختبار التفاعلي</div>
+    </div>
+</nav>
+
+<div class="page-header">
+    <h2 class="page-title" id="subjectTitle">تحميل الاختبار...</h2>
+</div>
+
+<div class="quiz-container">
+    <div class="header">
+        <h3 id="qCount">السؤال 0 من 0</h3>
+        <div class="timer" id="timer">60:00</div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div id="quizContent">
+        <div class="question-box">
+            <p id="questionText">جاري تحميل الأسئلة...</p>
+            <div class="options" id="optionsBox"></div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn prev-btn" onclick="prevQuestion()">السابق</button>
+            <button class="nav-btn next-btn" onclick="nextQuestion()">التالي</button>
+            <button class="nav-btn finish-btn" onclick="finishExam()">إنهاء الاختبار</button>
+        </div>
+    </div>
+
+    <div id="resultBox"></div>
+</div>
+<footer class="footer">
+<p>&copy; 2026 دليل التميز. جميع الحقوق محفوظة.</p>
+</footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+// إعدادات Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCzQ3CAwzIS41TuWsbhomTdsdDzJGH3bmU",
+  authDomain: "studentapp-97888.firebaseapp.com",
+  projectId: "studentapp-97888",
+  storageBucket: "studentapp-97888.appspot.com",
+  messagingSenderId: "654721058804",
+  appId: "1:654721058804:web:db251bb134e8abd73fdba1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// المتغيرات الأساسية
+let questions = [];
+let currentIndex = 0;
+let userAnswers = [];
+let timerInterval;
+let timeLeft = 60 * 60; // 60 دقيقة
+const currentSubject = localStorage.getItem("currentSubject"); 
+const userKey = localStorage.getItem("userActivationKey");
+
+document.getElementById("subjectTitle").innerText = currentSubject ? "اختبار مادة: " + currentSubject : "اختبار عام";
+
+// 1. نظام الحماية الفوري (الطرد)
+if(userKey) {
+    onSnapshot(doc(db, "activationKeys", userKey), (snapshot) => {
+        if(snapshot.exists() && snapshot.data().disabled === true) {
+            alert("⚠️ تم إنهاء جلستك من قبل الإدارة.");
+            location.href = "login.html";
+        }
+    });
+}
+
+// 2. تعديل وظيفة تحميل الأسئلة (الجزء المطلوب)
+async function loadQuestions(){
+    try {
+        if(!currentSubject) {
+            document.getElementById("questionText").innerText = "⚠️ لم يتم تحديد مادة الاختبار، يرجى العودة للخلف واختيار مادة.";
+            return;
+        }
+
+        console.log("جاري جلب الأسئلة لمادة:", currentSubject);
+        
+        // استعلام Firestore مع الفلترة حسب المادة
+        const q = query(collection(db, "quizQuestions"), where("subject", "==", currentSubject));
+        const snap = await getDocs(q);
+
+        if(snap.empty){
+            document.getElementById("questionText").innerHTML = `لا توجد أسئلة مضافة لهذه المادة بعد في قاعدة البيانات. <br><small>تأكد من مطابقة الاسم: (${currentSubject})</small>`;
+            return;
+        }
+
+        // تفريغ المصفوفة وتعبئتها
+        questions = [];
+        snap.forEach(doc => {
+            questions.push({id: doc.id, ...doc.data()});
+        });
+
+        userAnswers = new Array(questions.length).fill(null);
+        
+        startTimer();
+        showQuestion();
+    } catch(error) {
+        console.error("خطأ الاتصال:", error);
+        document.getElementById("questionText").innerText = "❌ حدث خطأ في الاتصال بقاعدة البيانات. تأكد من إعدادات Firestore Rules.";
+    }
+}
+
+// 3. عرض السؤال الحالي
+function showQuestion(){
+    if(questions.length === 0) return;
+    
+    const q = questions[currentIndex];
+    document.getElementById("qCount").innerText = `السؤال ${currentIndex + 1} من ${questions.length}`;
+    document.getElementById("questionText").innerText = q.question;
+
+    const box = document.getElementById("optionsBox");
+    box.innerHTML = "";
+
+    q.options.forEach((opt, index) => {
+        const label = document.createElement("label");
+        const isChecked = userAnswers[currentIndex] === index ? "checked" : "";
+        
+        label.innerHTML = `<input type="radio" name="answer" value="${index}" ${isChecked}> ${opt}`;
+        label.onclick = () => {
+            userAnswers[currentIndex] = index;
+            const radios = label.parentElement.querySelectorAll('input');
+            radios[index].checked = true;
+        };
+        box.appendChild(label);
+    });
+    updateProgress();
+}
+
+// 4. نظام المؤقت والتقدم
+function startTimer(){
+    if(timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+        document.getElementById("timer").innerText = `${mins}:${secs < 10 ? '0'+secs : secs}`;
+        if(timeLeft <= 0) { clearInterval(timerInterval); finishExam(); }
+        timeLeft--;
+    }, 1000);
+}
+
+function updateProgress(){
+    if(questions.length > 0) {
+        const percent = ((currentIndex + 1) / questions.length) * 100;
+        document.getElementById("progress").style.width = percent + "%";
+    }
+}
+
+// 5. ربط وظائف التنقل بالنافذة (Window)
+window.nextQuestion = () => {
+    if(currentIndex < questions.length - 1) { currentIndex++; showQuestion(); }
+};
+
+window.prevQuestion = () => {
+    if(currentIndex > 0) { currentIndex--; showQuestion(); }
+};
+
+window.finishExam = () => {
+    if(userAnswers.includes(null)) {
+        if(!confirm("⚠️ لم تقم بالإجابة على جميع الأسئلة، هل أنت متأكد من الإنهاء؟")) return;
+    }
+
+    clearInterval(timerInterval);
+    let score = 0;
+    questions.forEach((q, i) => {
+        if(userAnswers[i] === q.correctIndex) score++;
+    });
+
+    const percent = ((score / questions.length) * 100).toFixed(1);
+    document.getElementById("quizContent").style.display = "none";
+    document.getElementById("resultBox").innerHTML = `
+        <div class="result">
+            <h2>انتهى الاختبار 🎉</h2>
+            <p style="font-size:24px; margin:15px 0;">درجتك: ${score} من ${questions.length}</p>
+            <p>النسبة المئوية: ${percent}%</p>
+            <button class="nav-btn" style="background:white; color:#16a34a; margin-top:15px;" onclick="location.reload()">إعادة الاختبار</button>
+        </div>
+    `;
+};
+
+// بدء العملية
+loadQuestions();
+</script>
+<script src="layout.js"></script>
+</body>
+</html>

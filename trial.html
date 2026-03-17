@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل التميز | النسخة التجريبية</title>
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Cairo','Segoe UI',Tahoma,sans-serif;
+background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 50%,#f8fafc 100%);
+color:#14532d;
+direction:rtl;
+line-height:1.7;
+}
+
+.navbar{
+background:linear-gradient(135deg,#16a34a,#22c55e);
+padding:1rem 0;
+box-shadow:0 8px 25px rgba(22,163,74,0.25);
+}
+
+.navbar-container{
+max-width:1200px;
+margin:auto;
+padding:0 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+font-weight:bold;
+}
+
+.container{
+max-width:1000px;
+margin:60px auto;
+padding:20px;
+text-align:center;
+}
+
+.notice{
+background:#dc2626;
+color:white;
+padding:15px;
+border-radius:12px;
+margin-bottom:40px;
+font-weight:bold;
+}
+
+.subject-card{
+background:white;
+border-radius:20px;
+padding:40px;
+cursor:pointer;
+transition:0.4s ease;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+display:inline-block;
+min-width:300px;
+}
+
+.subject-card:hover{
+transform:translateY(-10px);
+box-shadow:0 20px 40px rgba(34,197,94,0.25);
+}
+
+.subject-card i{
+font-size:3rem;
+margin-bottom:15px;
+color:#16a34a;
+}
+
+.subject-card h3{
+margin-bottom:10px;
+font-weight:700;
+color:#166534;
+}
+
+.footer{
+background:linear-gradient(135deg,#14532d,#166534);
+color:#d1fae5;
+text-align:center;
+padding:2rem;
+margin-top:4rem;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="navbar-container">
+<span>دليل التميز - النسخة التجريبية</span>
+</div>
+</nav>
+
+<div class="container">
+
+<div class="notice">
+أنت تستخدم النسخة التجريبية — متاح مادة القرآن فقط
+</div>
+
+<div class="subject-card" onclick="openQuran()">
+<i class="fas fa-quran"></i>
+<h3>القرآن الكريم</h3>
+<p>تصفح المادة في النسخة التجريبية</p>
+</div>
+
+<br><br>
+
+<button onclick="goToLogin()" style="
+background:#16a34a;
+color:white;
+padding:12px 25px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;">
+الرجوع لتسجيل الدخول
+</button>
+
+</div>
+
+<footer class="footer">
+<p>&copy; 2026 دليل التميز. جميع الحقوق محفوظة.</p>
+</footer>
+
+<script>
+function openQuran(){
+    localStorage.setItem("currentSubject","quran");
+    window.location.href="subject-detail.html";
+}
+
+function goToLogin(){
+    window.location.href="index.html";
+}
+</script>
+<script src="assets/modal-system.js"></script>
+</body>
+
+</html>
